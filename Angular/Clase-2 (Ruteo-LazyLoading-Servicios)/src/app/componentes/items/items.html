@@ -1,0 +1,26 @@
+<p>items works!</p>
+
+<button (click)="sumar()">Sumar</button>
+
+<section class="items-page">
+    <header class="items-header">
+        <h1>Catalogo de Items</h1>
+        <p>Listado de ejemplo con datos mock: id, nombre y descripcion.</p>
+    </header>
+
+    <div class="items-grid">
+        @for (item of items; track item.id) {
+            <article class="item-card">
+                <div class="item-top">
+                    <span class="item-id">ID {{ item.id }}</span>
+                    <h2>{{ item.nombre }}</h2>
+                </div>
+                <p>{{ item.descripcion }}</p>
+                <!-- <button [routerLink]="['detalle', ]" [queryParams]="{ id: item.id }">Ver detalle</button> -->
+                <button [routerLink]="['detalle', item.id]">Ver detalle</button> <!-- routerLink sirve para navegar a otro componente-->
+            </article>
+        }
+    </div>
+</section>
+
+<router-outlet />

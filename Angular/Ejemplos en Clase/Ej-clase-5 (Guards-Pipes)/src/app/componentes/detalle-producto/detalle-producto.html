@@ -1,0 +1,9 @@
+<h2>Detalle del producto</h2>
+<div *ngIf="producto() as p; else noProducto">
+  <p>Nombre: {{ p.nombre |regitrado}}</p>
+  <p>Descripción: {{ p.descripcion }}</p>
+  <p>Precio: {{ p.precio | currency: 'ARS' }}</p>
+</div>
+<ng-template #noProducto>
+  <p>Producto no encontrado.</p>
+</ng-template>

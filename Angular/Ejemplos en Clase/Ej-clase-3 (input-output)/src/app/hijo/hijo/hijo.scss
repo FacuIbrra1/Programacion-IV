@@ -1,0 +1,67 @@
+.hijo-container {
+    background: #d6d5a9;
+    border: 2px dashed #96955e;
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin: 1.25rem 0;
+}
+
+.hijo-container h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    color: #b1831a;
+}
+
+.hijo-container p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.hijo-container p strong {
+    color: #1d4ed8;
+}
+
+.botones {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.botones button {
+    flex: 1;
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.botones button:first-child {
+    background-color: #22c55e;
+    color: #ffffff;
+}
+
+.botones button:first-child:hover {
+    background-color: #16a34a;
+}
+
+    .botones button:last-child {
+    background-color: #ef4444;
+}
+
+.botones button:last-child:hover {
+    background-color: #dc2626;
+}
+
+.botones button:active {
+    transform: scale(0.98);
+}
+
+small {
+    display: block;
+    color: #64748b;
+    font-size: 0.8rem;
+    line-height: 1.3;
+}

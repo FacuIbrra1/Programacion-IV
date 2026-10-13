@@ -1,0 +1,21 @@
+<p>user-list works!</p>
+
+<div>
+    @for (user of usuarios(); track user.id){
+        <app-user-card [user]="user" (userSelected)="metodoSeleccionado($event)"></app-user-card>
+    }
+    @if (usuarioSeleccionado() != undefined){
+        <div class="user-details">
+            <h2>Detalles del usuario seleccionado:</h2>
+            <p><strong>Nombre:</strong> {{usuarioSeleccionado()?.name}}</p>
+            <p><strong>Username:</strong> {{usuarioSeleccionado()?.username}}</p>
+            <p><strong>Email:</strong> {{usuarioSeleccionado()?.email}}</p>
+            <p><strong>Phone:</strong> {{usuarioSeleccionado()?.phone}}</p>
+            <p><strong>Website:</strong> {{usuarioSeleccionado()?.website}}</p>
+            <p><strong>Company:</strong> {{usuarioSeleccionado()?.company?.name}}</p>
+        </div>
+    }
+    @else{
+        <p>No hay usuario seleccionado.</p>
+    }
+</div>

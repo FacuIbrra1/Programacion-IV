@@ -1,0 +1,14 @@
+<div class="login card">
+    <input type="text" [(ngModel)]="username" placeholder="Username">
+    <input type="password" [(ngModel)]="password" placeholder="Password">
+    <button (click)="login()">Login</button>
+    
+    @if (loginError()) {
+    <small>
+        Login failed. Please try again.
+    </small>
+    }
+
+    <button [routerLink]="['/registro']">Registrarse</button>
+
+</div>

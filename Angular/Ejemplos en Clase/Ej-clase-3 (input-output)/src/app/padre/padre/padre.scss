@@ -1,0 +1,66 @@
+.padre-container {
+    max-width: 500px;
+    width: 100%;
+    background: #a0ddad;
+    border: 2px solid #68a976;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    color: #1e293b;
+}
+
+.padre-container h2 {
+    margin-top: 0;
+    font-size: 1.4rem;
+    color: #0f172a;
+}
+
+.padre-container p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+.padre-container p strong {
+    color: #2563eb;
+    font-size: 1.3rem;
+}
+
+.historial {
+    margin-top: 1.5rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+}
+
+.historial h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.95rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.historial ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.historial li {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+}
+
+.historial li:last-child {
+    border-bottom: none;
+}
+
+.historial li.vacio {
+    color: #94a3b8;
+    font-style: italic;
+}

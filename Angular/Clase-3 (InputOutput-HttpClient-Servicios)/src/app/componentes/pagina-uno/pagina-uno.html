@@ -1,0 +1,13 @@
+<p>pagina-uno works!</p>
+
+{{data.numero()}}
+
+<button (click)="sumar()">Sumar</button>
+<button (click)="restar()">Restar</button>
+
+<table>
+    <tr *ngFor="let got of gotList()">
+        <td>{{ got.fullName }}</td>
+        <td><img [src]="got.imageUrl" width="100" /></td>
+    </tr>
+</table>

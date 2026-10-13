@@ -1,0 +1,26 @@
+<div class="hijo-container">
+    <h3>Componente HIJO 🐣</h3>
+    <p>Valor recibido del PADRE: <strong>{{ valor() }}</strong></p>
+    <div class="botones">
+        <button (click)="sumar()">Incrementar</button>
+        <button (click)="restar()">Decrementar</button>
+    </div>
+
+    <small>Nota: El valor del contador se encuentra en el componente PADRE, 
+        el HIJO solo lo recibe y emite eventos para modificarlo.</small>
+
+    <hr>
+
+    <!-- Ejemplo model() -->
+    <h3>Ejemplo con model()</h3>
+
+    <p>
+        Contador con model:
+        <strong>{{ contadorModel() }}</strong>
+    </p>
+
+    <div class="botones">
+        <button (click)="sumarModel()">+1</button>
+        <button (click)="restarModel()">-1</button>
+    </div>
+</div>

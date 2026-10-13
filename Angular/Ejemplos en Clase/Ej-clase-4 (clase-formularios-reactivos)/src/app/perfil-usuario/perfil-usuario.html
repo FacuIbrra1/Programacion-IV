@@ -1,0 +1,92 @@
+<div class="container">
+  <h2>Ejemplo: Formularios Reactivos</h2>
+
+  <form [formGroup]="miFormulario" (ngSubmit)="guardar()">
+    
+    <!-- Campo Nombre -->
+    <div class="form-group">
+      <label for="nombre">Nombre Completo:</label>
+      <input
+        id="nombre"
+        type="text"
+        formControlName="nombre"
+        [class.is-invalid]="esCampoInvalido('nombre')"
+      />
+      @if (esCampoInvalido('nombre')) {
+        <div class="error">
+          @if (miFormulario.get('nombre')?.hasError('required')) {
+            <small>El nombre es obligatorio.</small>
+          }
+          @if (miFormulario.get('nombre')?.hasError('minlength')) {
+            <small>Debe tener al menos 3 caracteres.</small>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Campo Email -->
+    <div class="form-group">
+      <label for="email">Correo Corporativo:</label>
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        [class.is-invalid]="esCampoInvalido('email')"
+      />
+      @if (esCampoInvalido('email')) {
+        <div class="error">
+          @if (miFormulario.get('email')?.hasError('required')) {
+            <small>El correo es obligatorio.</small>
+          }
+          @if (miFormulario.get('email')?.hasError('email')) {
+            <small>Formato de correo no válido.</small>
+          }
+          @if (miFormulario.get('email')?.hasError('dominioInvalido')) {
+            <small>Debe ser un correo con dominio @empresa.com.</small>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Sección FormArray: Habilidades Dinámicas -->
+    <div class="form-group" formArrayName="habilidades">
+      <h3>Habilidades Técnicas</h3>
+      <button type="button" (click)="agregarHabilidad()">+ Agregar Habilidad</button>
+
+      @for (control of habilidades.controls; track $index) {
+        <div class="array-row">
+          <input [formControlName]="$index" placeholder="Ej. Angular, TypeScript" />
+          <button
+            type="button"
+            (click)="eliminarHabilidad($index)"
+            [disabled]="habilidades.length === 1"
+          >
+            Eliminar
+          </button>
+        </div>
+      } @empty {
+        <p>No hay habilidades agregadas.</p>
+      }
+    </div>
+
+    <!-- Acciones -->
+    <div class="button-group">
+      <button type="submit" [disabled]="miFormulario.invalid">
+        Enviar Formulario
+      </button>
+      <button type="button" (click)="cargarDatosDemo()">
+        Cargar Datos Demo
+      </button>
+    </div>
+  </form>
+
+  <!-- Inspección del Estado en Tiempo Real -->
+  <hr />
+  <div class="debug-panel">
+    <h3>Inspección del Estado en Tiempo Real</h3>
+    <p><strong>Estado global:</strong> {{ miFormulario.status }}</p>
+    <p><strong>Formulario Válido:</strong> {{ miFormulario.valid }}</p>
+    <p><strong>Formulario Modificado (Dirty):</strong> {{ miFormulario.dirty }}</p>
+    <pre><code>{{ miFormulario.value | json }}</code></pre>
+  </div>
+</div>

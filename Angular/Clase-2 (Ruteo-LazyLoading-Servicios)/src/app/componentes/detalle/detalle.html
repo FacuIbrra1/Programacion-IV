@@ -1,0 +1,19 @@
+<p>detalle works!</p>
+
+<section class="detalle-page">
+	<h1>Detalle del Item</h1>
+	<p>Aca se mostrara la informacion completa del item seleccionado.</p>
+	@if (itemEncontrado) {
+	<div>
+		<h2>{{ itemEncontrado?.nombre }}</h2> <!-- el ? sirve para evitar errores si el valor es undefined -->
+		<p>ID: {{ itemEncontrado?.id }}</p>
+		<p>Descripcion: {{ itemEncontrado?.descripcion }}</p>
+	</div>
+	} @else {
+		<p>
+			No se encontro el item
+		</p>
+	}
+
+
+</section>

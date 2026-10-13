@@ -1,0 +1,24 @@
+div {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    padding: 16px;
+}
+
+.user-details {
+    grid-column: 1 / -1;
+    background-color: #f5f7fa;
+    border: 1px solid #d9e2ec;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.user-details h2 {
+    margin-top: 0;
+    color: #222;
+}
+
+.user-details p {
+    margin: 4px 0;
+    color: #444;
+}

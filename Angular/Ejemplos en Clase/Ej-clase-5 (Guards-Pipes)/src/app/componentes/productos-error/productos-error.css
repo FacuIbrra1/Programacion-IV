@@ -1,0 +1,11 @@
+p {
+	width: min(640px, calc(100% - 2rem));
+	margin: 2rem auto;
+	padding: 1rem 1.1rem;
+	border-radius: 12px;
+	border: 1px solid rgba(178, 74, 68, 0.36);
+	background: rgba(255, 245, 244, 0.9);
+	color: #812f2c;
+	font-weight: 600;
+	box-shadow: 0 10px 20px rgba(128, 47, 44, 0.12);
+}

@@ -1,0 +1,40 @@
+.user-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.user-card:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+.user-card h2 {
+    margin: 0 0 8px;
+    font-size: 1.1rem;
+    color: #222;
+}
+
+.user-card p {
+    margin: 4px 0;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.user-card button {
+    margin-top: 12px;
+    padding: 6px 14px;
+    background-color: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.user-card button:hover {
+    background-color: #1d4ed8;
+}

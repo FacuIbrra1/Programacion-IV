@@ -1,0 +1,27 @@
+<div class="padre-container">
+    <h2>Componente PADRE 🐓</h2>
+    <p>Valor del contador:
+        <strong>{{ contador() }}</strong>
+    </p>
+
+    <app-hijo [valor]="contador()"
+        (incrementar)="alIncrementar()"
+        (decrementar)="alDecrementar()"
+        [(contadorModel)]="contadorModel">
+    </app-hijo> <!-- [ ] Property Binding: Pasa un dato del padre hacia el hijo. El hijo lo recibe como un Input.
+                     ( ) Event Binding: Escucha un evento que el hijo emite (con un Output) y ejecuta un método en el padre cuando eso pasa. Es la comunicación inversa a [ ].
+                     [( )] Two-way Binding: Combina ambas cosas: el padre le pasa el valor al hijo "[ ]" 
+                     y, si el hijo lo cambia, el padre se entera y se actualiza automáticamente "( )".-->
+
+    <div class="historial">
+        <h4>Historial de eventos recibidos DEL HIJO: </h4>
+        <ul>
+            @for (entrada of historial(); track $index){
+                <li>{{entrada}}</li>
+            }
+            @empty{
+                <li class="vacio">No hay eventos en el historial.</li>
+            }
+        </ul>
+    </div>
+</div>

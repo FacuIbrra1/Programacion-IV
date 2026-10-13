@@ -1,0 +1,17 @@
+<h1>Productos</h1>
+
+<input class="buscador" type="text" [(ngModel)]="palabraClave" placeholder="Buscar productos...">
+<ul>
+  @for (producto of productos() | filter: palabraClave; track $index) {
+    <li>
+      <div class="item">{{ producto.nombre }} <button [routerLink]="['./detalle', producto.id]">Detalle</button></div>
+    </li>
+  }
+</ul>
+
+<div class="detalle">
+  <p>Detalle del producto seleccionado</p>
+  <router-outlet></router-outlet>
+</div>
+
+

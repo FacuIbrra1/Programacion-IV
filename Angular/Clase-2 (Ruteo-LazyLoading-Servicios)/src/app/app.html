@@ -1,0 +1,10 @@
+<h1> Clase 2</h1>
+
+<div class="navbar">
+  <button [routerLinkActive]="active" (click)="navegar('inicio')">Home</button>
+  <button [routerLinkActive]="active" routerLink="/sobre-nosotros" routerLinkActive="active">Sobre nosotros</button>
+  <button [routerLinkActive]="active" routerLink="/items" routerLinkActive="active">Items</button>
+  <button [routerLinkActive]="active" routerLink="/error" routerLinkActive="active">Error</button>
+</div>
+
+<router-outlet />

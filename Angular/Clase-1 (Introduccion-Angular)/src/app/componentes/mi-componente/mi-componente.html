@@ -1,0 +1,31 @@
+<p>mi-componente works!</p>
+
+<input type="text" [(ngModel)]="nombre" placeholder="Ingrese su nombre">
+<br>
+<br>
+
+<input type="number" [(ngModel)]="edad1" placeholder="Ingrese su edad1">
+<br>
+<br>
+
+<input type="number" [(ngModel)]="edad2" placeholder="Ingrese su edad2">
+<br>
+<br>
+
+<button (click)="calcularEdad()">Calcular</button>
+<br>
+<br>
+
+@if (resultado() > 10){
+    <h1>El resultado es mayor a 10</h1>
+    {{resultado()}}
+}
+@else if (resultado() <= 10 && resultado()!== 0){
+    <h1 class="mi-clase">El resultado es menor a 10</h1>
+    {{resultado()}}
+}
+
+@for (item of array(); track $index){
+    {{item}}
+}
+
