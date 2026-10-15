@@ -2,6 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { AutorService } from './autor.service.js';
 import { CreateAutorDto } from './dto/create-autor.dto.js';
 import { UpdateAutorDto } from './dto/update-autor.dto.js';
+import { ParseObjectIdPipe } from '@nestjs/mongoose';
+import { Types } from 'mongoose';
 
 @Controller('autor')
 export class AutorController {
@@ -18,17 +20,13 @@ export class AutorController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.autorService.findOne(+id);
+  findOne(@Param('id', ParseObjectIdPipe) id: Types.ObjectId) {
+    return this.autorService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAutorDto: UpdateAutorDto) {
-    return this.autorService.update(+id, updateAutorDto);
+  update(@Param('id', ParseObjectIdPipe) id: Types.ObjectId, @Body() updateAutorDto: UpdateAutorDto) {
+    return this.autorService.update(id, updateAutorDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.autorService.remove(+id);
-  }
 }
