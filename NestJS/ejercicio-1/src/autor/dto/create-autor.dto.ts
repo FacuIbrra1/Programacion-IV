@@ -1,14 +1,15 @@
-import { IsEmail, IsEmpty, IsString } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateAutorDto {
     @IsString()
-    @IsEmpty()
+    @IsNotEmpty()
     nombre: string;
 
     @IsString()
-    @IsEmpty()
+    @IsNotEmpty()
     apellido: string;
     
     @IsEmail()
+    @IsNotEmpty()
     mail: string;
 }

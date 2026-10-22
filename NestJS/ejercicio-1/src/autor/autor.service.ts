@@ -26,7 +26,7 @@ export class AutorService {
   }
 
   async update(id: Types.ObjectId, updateAutorDto: UpdateAutorDto) {
-    const updatedAutor = await this.autorModel.findByIdAndUpdate(id, updateAutorDto, { new: true, runValidators: true }).exec(); // Se encuentra y actualiza el autor por su ID, el upsert: true indica que si no se encuentra el autor, se creará uno nuevo con los datos proporcionados.
+    const updatedAutor = await this.autorModel.findByIdAndUpdate(id, updateAutorDto, { returnDocument: 'after', runValidators: true }).exec(); // Se encuentra y actualiza el autor por su ID, el upsert: true indica que si no se encuentra el autor, se creará uno nuevo con los datos proporcionados.
     return updatedAutor; // Se retorna el autor actualizado.
   }
 }

@@ -9,22 +9,22 @@ import { Types } from 'mongoose';
 export class AutorController {
   constructor(private readonly autorService: AutorService) {}
 
-  @Post()
+  @Post() // Usar http://localhost:3000/autor para crear un autor
   create(@Body() createAutorDto: CreateAutorDto) {
     return this.autorService.create(createAutorDto);
   }
 
-  @Get()
+  @Get() // Usar http://localhost:3000/autor para obtener todos los autores
   findAll() {
     return this.autorService.findAll();
   }
 
-  @Get(':id')
+  @Get(':id') // Usar http://localhost:3000/autor/:id para obtener un autor específico
   findOne(@Param('id', ParseObjectIdPipe) id: Types.ObjectId) {
     return this.autorService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch(':id') // Usar http://localhost:3000/autor/:id para actualizar un autor específico
   update(@Param('id', ParseObjectIdPipe) id: Types.ObjectId, @Body() updateAutorDto: UpdateAutorDto) {
     return this.autorService.update(id, updateAutorDto);
   }
