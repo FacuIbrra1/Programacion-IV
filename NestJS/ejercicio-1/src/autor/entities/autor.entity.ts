@@ -22,6 +22,7 @@ export class Autor {
 }
 
 export const AutorSchema = SchemaFactory.createForClass(Autor);
+AutorSchema.virtual('libros', { ref: 'Libro', localField: '_id', foreignField: 'autor' });
 
 // "Libros asociados": NO se guarda en el documento del autor.
 // Mongoose lo resuelve al consultar, buscando los libros cuyo campo

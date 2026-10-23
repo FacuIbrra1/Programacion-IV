@@ -1,4 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { ParseObjectIdPipe } from '@nestjs/mongoose';
+import { Types } from 'mongoose';
 import { LibrosService } from './libros.service.js';
 import { CreateLibroDto } from './dto/create-libro.dto.js';
 import { UpdateLibroDto } from './dto/update-libro.dto.js';
@@ -7,28 +9,28 @@ import { UpdateLibroDto } from './dto/update-libro.dto.js';
 export class LibrosController {
   constructor(private readonly librosService: LibrosService) {}
 
-  @Post()
+  @Post() // POST http://localhost:3000/libros
   create(@Body() createLibroDto: CreateLibroDto) {
     return this.librosService.create(createLibroDto);
   }
 
-  @Get()
+  @Get() // GET http://localhost:3000/libros
   findAll() {
     return this.librosService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.librosService.findOne(+id);
+  @Get(':id') // GET http://localhost:3000/libros/:id
+  findOne(@Param('id', ParseObjectIdPipe) id: Types.ObjectId) {
+    return this.librosService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLibroDto: UpdateLibroDto) {
-    return this.librosService.update(+id, updateLibroDto);
+  @Patch(':id') // PATCH http://localhost:3000/libros/:id
+  update(@Param('id', ParseObjectIdPipe) id: Types.ObjectId, @Body() updateLibroDto: UpdateLibroDto) {
+    return this.librosService.update(id, updateLibroDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.librosService.remove(+id);
+  @Delete(':id') // DELETE http://localhost:3000/libros/:id
+  remove(@Param('id', ParseObjectIdPipe) id: Types.ObjectId) {
+    return this.librosService.remove(id);
   }
 }

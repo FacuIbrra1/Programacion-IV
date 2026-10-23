@@ -16,12 +16,12 @@ export class AutorService {
   }
 
   async findAll() {
-    const autores = await this.autorModel.find().exec(); // Se buscan todos los documentos de la colección de autores en la base de datos.
+    const autores = await this.autorModel.find().populate('libros').exec(); // Se buscan todos los documentos de la colección de autores en la base de datos.
     return autores; // Se retorna la lista de autores encontrados.
   }
 
   async findOne(id: Types.ObjectId) {
-    const autor = await this.autorModel.findById(id).exec();
+    const autor = await this.autorModel.findById(id).populate('libros').exec(); // polulate('libros) indica que se quiere traer los libros asociados a este autor, usando el virtual populate definido en el esquema del autor.
     return autor;
   }
 
