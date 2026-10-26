@@ -11,19 +11,43 @@
 
 ## Calendario
 
+Las clases son los **martes y jueves**, y en cada una se puede presentar el avance al
+profesor. Cada sprint termina el día de una clase, así se presenta apenas está hecho.
+
 | Fecha | Día | Qué pasa |
 |---|---|---|
-| 26/10 | lunes | **Sprint 0** — decisiones, cuentas y proyectos creados |
-| 27/10 → 30/10 | mar → vie | **Sprint 1** — registro, login y base de los dos proyectos |
-| 31/10 → 03/11 | sáb → mar | **Sprint 2** — publicaciones y me gusta |
-| 04/11 → 07/11 | mié → sáb | **Sprint 3** — comentarios y sesión con JWT de 15 minutos |
-| 08/11 → 12/11 | dom → jue | **Sprint 4** — administrador, estadísticas, PWA, pipes y directivas |
-| **12/11** | jueves | **Finalización estimada** |
+| 26/10 | lunes | Sprint 0: decisiones, cuentas y proyectos creados |
+| **27/10** | martes | **Clase — presentación del Sprint 0** (idea, plan y decisiones) y consultas |
+| 27/10 → 29/10 | mar → jue | **Sprint 1** — registro, login y base de los dos proyectos |
+| **29/10** | jueves | **Clase — presentación del Sprint 1** |
+| 30/10 → 03/11 | vie → mar | **Sprint 2** — publicaciones y me gusta |
+| **03/11** | martes | **Clase — presentación del Sprint 2** |
+| 04/11 → 05/11 | mié → jue | **Sprint 3** — comentarios y sesión con JWT de 15 minutos |
+| **05/11** | jueves | **Clase — presentación del Sprint 3** |
+| 06/11 → 12/11 | vie → jue | **Sprint 4** — administrador, estadísticas, PWA, pipes y directivas |
+| 10/11 | martes | Clase — avance del Sprint 4 (back del administrador y estadísticas) |
+| **12/11** | jueves | **Clase — presentación del Sprint 4 · Finalización estimada** |
 | 13/11 → 18/11 | vie → mié | Colchón: pruebas en la URL pública, README y preparación de la defensa |
-| **19/11** | jueves | **Entrega** |
+| 17/11 | martes | Clase — última consulta antes de la entrega |
+| **19/11** | jueves | **Clase — Entrega y defensa** |
 
-El Sprint 4 tiene un día más que los otros porque es el más cargado. El colchón del 13 al 18
-existe para absorber atrasos: si algo no llegó al 12/11, se termina ahí, no se recorta.
+**Cómo se repartieron los días.** Entre clase y clase hay 2 días (martes → jueves) o 5
+(jueves → martes, con el fin de semana). Los dos sprints más pesados se llevan los tramos
+largos: el **Sprint 2** tiene 5 días y el **Sprint 4**, 7, con una presentación de avance
+en el medio. Los Sprints 1 y 3 son más acotados y entran en tramos de 2 o 3 días; el 1 además
+arranca con las cuentas y los proyectos ya creados en el Sprint 0.
+
+El colchón del 13 al 18 existe para absorber atrasos: si algo no llegó al 12/11, se termina
+ahí, no se recorta. La clase del 17/11 sirve para una última consulta.
+
+### Consultas para la clase del 27/10
+
+1. El enunciado subido dice **"2026 C1"**: ¿es la versión vigente para este cuatrimestre?
+2. Para el 19/11, ¿se entregan los **Sprints 1 a 4**? (el 5 es de recuperatorio y el 6, del final)
+3. ¿Está bien que la **cuenta de un club la maneje su delegado**, con el registro de una persona?
+4. El enunciado pide en el **Sprint 2** mostrar en Mi Perfil comentarios cuyo controller es
+   del **Sprint 3**: ¿se acepta mostrarlos recién en el Sprint 3?
+5. ¿Alcanza con devolver el token en la respuesta y mandarlo en el header, en lugar de cookies?
 
 Los **Sprints 5 (recuperatorio) y 6 (final)** quedan fuera de esta entrega. Igual se tienen
 en cuenta desde el diseño: las colecciones que necesitan sus estadísticas (`ingresos`,
@@ -62,7 +86,7 @@ en cuenta desde el diseño: las colecciones que necesitan sus estadísticas (`in
 
 ---
 
-## Sprint 0 — Cimientos · 26/10
+## Sprint 0 — Cimientos · 26/10 · se presenta el mar 27/10
 
 **Objetivo:** que el Sprint 1 arranque escribiendo código, no creando cuentas.
 
@@ -77,7 +101,7 @@ en cuenta desde el diseño: las colecciones que necesitan sus estadísticas (`in
 
 ---
 
-## Sprint 1 — Registro y login · 27/10 → 30/10
+## Sprint 1 — Registro y login · 27/10 → 29/10 · se presenta el jue 29/10
 
 **Objetivo:** un usuario se registra con su foto, inicia sesión y navega las cuatro pantallas.
 
@@ -115,7 +139,7 @@ Cloudinary y la contraseña encriptada en Atlas, e iniciar sesión con esa cuent
 
 ---
 
-## Sprint 2 — Publicaciones y me gusta · 31/10 → 03/11
+## Sprint 2 — Publicaciones y me gusta · 30/10 → 03/11 · se presenta el mar 03/11
 
 **Objetivo:** publicar, listar, ordenar, paginar y dar me gusta.
 
@@ -151,7 +175,7 @@ me gusta se rechaza, y el orden "por me gusta" cambia.
 
 ---
 
-## Sprint 3 — Comentarios y sesión · 04/11 → 07/11
+## Sprint 3 — Comentarios y sesión · 04/11 → 05/11 · se presenta el jue 05/11
 
 **Objetivo:** comentar, y una sesión de 15 minutos que avisa antes de vencer.
 
@@ -181,9 +205,13 @@ usando la app sin volver a iniciar sesión.
 
 ---
 
-## Sprint 4 — Administrador y estadísticas · 08/11 → 12/11
+## Sprint 4 — Administrador y estadísticas · 06/11 → 12/11 · se presenta el jue 12/11
 
 **Objetivo:** el panel del administrador y cerrar los requisitos de la aplicación.
+
+**Orden sugerido:** el back primero (usuarios, guard de roles y estadísticas), para mostrarlo
+como avance en la clase del **mar 10/11**; después, el front del dashboard, la PWA, los pipes
+y las directivas, que ya se hicieron en el TP-1.
 
 ### Back
 - [ ] **Guard de roles**: solo `administrador`
@@ -216,8 +244,10 @@ ve el motivo; los tres gráficos cambian al mover el rango de fechas.
 
 ---
 
-## Colchón — 13/11 → 18/11
+## Colchón — 13/11 → 18/11 · entrega y defensa el jue 19/11
 
+- [ ] Terminar lo que haya quedado pendiente del Sprint 4
+- [ ] Llevar las dudas que queden a la clase del **mar 17/11**
 - [ ] Recorrer el flujo completo en la URL pública, con los tres tipos de cuenta
 - [ ] Revisar que **ningún error responda 200 y ninguna respuesta correcta responda 400**
 - [ ] README con arquitectura y decisiones técnicas (como el del TP-1)
@@ -241,7 +271,8 @@ ve el motivo; los tres gráficos cambian al mover el rango de fechas.
 
 | Riesgo | Qué se hace |
 |---|---|
-| El Sprint 4 es el más cargado | Tiene un día más, y el colchón del 13 al 18 lo absorbe |
+| El Sprint 4 es el más cargado | Tiene el tramo más largo (7 días), avance a mitad de camino el 10/11 y el colchón del 13 al 18 |
+| Los Sprints 1 y 3 tienen tramos cortos (2 o 3 días) | El 1 arranca con todo creado en el Sprint 0; el 3 reutiliza la sesión del TP-1 (`provideAppInitializer`, guards) |
 | El hosting gratuito del back "se duerme" y tarda en responder | Avisarlo en la defensa y abrir la app unos minutos antes |
 | Subir imágenes en `multipart` es nuevo | Se hace en el Sprint 1, cuando todavía hay margen |
 | El enunciado pide en el Sprint 2 mostrar comentarios que se crean en el 3 | El modelo de comentarios se crea en el Sprint 2 |
