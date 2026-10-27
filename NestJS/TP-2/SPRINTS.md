@@ -9,6 +9,27 @@
 
 ---
 
+## Regla: solo temas vistos en clase
+
+**Está prohibido usar lógica o conceptos que no se hayan visto en clase.** La referencia es
+el repositorio Programacion-IV (ejemplos de clase, ejercicios y Resúmenes de Angular y NestJS).
+Si algo hace falta sí o sí y no se vio, se anota acá y se decide antes de usarlo.
+
+### Conceptos no vistos que el enunciado exige
+
+| # | Concepto | Para qué lo pide el TP | Sprint | Estado |
+|---|---|---|---|---|
+| 1 | Validar que `tipo` sea jugador, dt o club (`@IsIn` o un control en el servicio) | Responder 400 y no 500 ante un tipo inválido | 1 | ⏳ A decidir |
+| 2 | Contraseña con al menos una mayúscula y un número (expresión regular o recorrer los caracteres) | "8 caracteres, una mayúscula y un número" | 1 | ⏳ A decidir |
+| 3 | Validar que la fecha de nacimiento sea una fecha real (`@IsDateString` o un control en el servicio) | Responder 400 y no 500 | 1 | ⏳ A decidir |
+| 4 | Encriptar la contraseña (`bcrypt`; en clase solo se mencionó en un comentario) | "La contraseña debe quedar encriptada" | 1 | ⏳ A decidir |
+| 5 | Recibir un archivo (`multipart/form-data`, `FileInterceptor`) | Imagen de perfil en el registro | 1 | ⏳ A decidir |
+| 6 | Guardar la imagen (Cloudinary, o una carpeta del back servida como estática) | "Guardarla apropiadamente y guardar la URL" | 1 | ⏳ A decidir |
+| 7 | Responder 409 ante un correo o usuario repetido (detectar el error `11000` de Mongo) | Status correctos: hoy un repetido responde 500 | 1 | ⏳ A decidir |
+| 8 | CORS (`app.enableCors`) | Que el navegador deje al front de Angular llamar al back | 1 (al conectar el front) | ⏳ A decidir |
+
+---
+
 ## Calendario
 
 Las clases son los **martes y jueves**, y en cada una se puede presentar el avance al
