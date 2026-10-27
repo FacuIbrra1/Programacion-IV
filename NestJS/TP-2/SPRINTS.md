@@ -96,9 +96,9 @@ en cuenta desde el diseño: las colecciones que necesitan sus estadísticas (`in
 
 **Objetivo:** que el Sprint 1 arranque escribiendo código, no creando cuentas.
 
-- [x] Repo nuevo en GitHub con `backend/` y `frontend/`
-- [ ] `nest new backend` (NestJS 12, igual que `ejercicio-1`) — a confirmar al revisar el repo
-- [ ] `ng new frontend` (Angular 22, standalone, igual que el TP-1) — a confirmar al revisar el repo
+- [x] Repo nuevo en GitHub con `backend/` y `frontend/`: [TP2-FacundoIbarraQuiroz](https://github.com/FacuIbrra1/TP2-FacundoIbarraQuiroz)
+- [x] `nest new backend` (NestJS 12, ESM, igual que `ejercicio-1`)
+- [x] `ng new frontend` (Angular 22, standalone, igual que el TP-1)
 - [x] Base `potrero-libre` en el cluster de Atlas y `MONGO_URI` en el `.env` (que no se sube)
 - [x] Cuenta de Cloudinary creada
 - [ ] Las tres claves de Cloudinary en el `.env` → **pasa al Sprint 1**, cuando se vea el tema
