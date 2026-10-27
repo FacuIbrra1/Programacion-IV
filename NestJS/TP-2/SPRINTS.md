@@ -40,16 +40,22 @@ arranca con las cuentas y los proyectos ya creados en el Sprint 0.
 El colchón del 13 al 18 existe para absorber atrasos: si algo no llegó al 12/11, se termina
 ahí, no se recorta. La clase del 17/11 sirve para una última consulta.
 
-### Consultas para la clase del 27/10
+### Consultas a la cátedra (27/10)
 
-1. El enunciado subido dice **"2026 C1"**: ¿es la versión vigente para este cuatrimestre?
-2. Para el 19/11, ¿se entregan los **Sprints 1 a 4**? (el 5 es de recuperatorio y el 6, del final)
-3. ¿Está bien que la **cuenta de un club la maneje su delegado**, con el registro de una persona?
-4. El enunciado pide en el **Sprint 2** mostrar en Mi Perfil comentarios cuyo controller es
-   del **Sprint 3**: ¿se acepta mostrarlos recién en el Sprint 3?
-5. ¿Alcanza con devolver el token en la respuesta y mandarlo en el header, en lugar de cookies?
+| # | Consulta | Respuesta | Estado |
+|---|---|---|---|
+| 1 | El enunciado dice **"2026 C1"**: ¿es la versión vigente? | Sí | ✅ Confirmado |
+| 2 | ¿El 19/11 se entregan los **Sprints 1 a 4**? | Sí, hasta el Sprint 4 | ✅ Confirmado |
+| 3 | ¿La **cuenta de un club la maneja su delegado**, con el registro de una persona? | Se toma como válido por ahora | ⏳ Por definirse |
+| 4 | Mi Perfil (Sprint 2) muestra comentarios cuyo controller es del **Sprint 3**: ¿se aceptan recién en el 3? | Sin respuesta todavía | ⏳ Por definirse |
+| 5 | ¿Alcanza con el token en la respuesta y en el header, sin cookies? | Las cookies no son obligatorias | ⏳ Por definirse |
 
-Los **Sprints 5 (recuperatorio) y 6 (final)** quedan fuera de esta entrega. Igual se tienen
+Mientras estén "por definirse", se sigue con lo planificado: cuenta de club a cargo del
+delegado, token en el header, y el modelo de comentarios creado en el Sprint 2 para poder
+mostrarlos en Mi Perfil apenas existan.
+
+Los **Sprints 5 (recuperatorio) y 6 (final)** quedan fuera de esta entrega (confirmado por la
+cátedra: el 19/11 se entrega hasta el Sprint 4). Igual se tienen
 en cuenta desde el diseño: las colecciones que necesitan sus estadísticas (`ingresos`,
 `visitas`, `likes` con fecha) se crean antes, para que cuando lleguen haya datos.
 
@@ -60,8 +66,8 @@ en cuenta desde el diseño: las colecciones que necesitan sus estadísticas (`in
 | # | Decisión | Por qué |
 |---|---|---|
 | 1 | Dos atributos distintos: **`perfil`** (`usuario` \| `administrador`) y **`tipo`** (`jugador` \| `dt` \| `club`) | El enunciado usa "perfil" para el rol; el tipo de cuenta futbolero es otra cosa |
-| 2 | **La cuenta de un club la maneja su delegado** | El registro del TP pide nombre, apellido y fecha de nacimiento: son los del delegado. Los datos del club van en el perfil |
-| 3 | Token en el header **`Authorization: Bearer`** + interceptor en Angular | Front y back en dominios distintos: una cookie sería de terceros y los navegadores la bloquean |
+| 2 | **La cuenta de un club la maneja su delegado** ⏳ *por definirse con la cátedra* | El registro del TP pide nombre, apellido y fecha de nacimiento: son los del delegado. Los datos del club van en el perfil |
+| 3 | Token en el header **`Authorization: Bearer`** + interceptor en Angular ⏳ *por definirse con la cátedra* | Front y back en dominios distintos: una cookie sería de terceros y los navegadores la bloquean |
 | 4 | **JWT desde el Sprint 1**, aunque el enunciado lo pida en el 3 | En el Sprint 2 hay que saber quién da me gusta y quién borra |
 | 5 | Imágenes en **Cloudinary** | El disco de un hosting gratuito se borra en cada deploy |
 | 6 | `likes`, `comentarios`, `guardados` y `compartidos` en **colecciones propias**, con índice único donde corresponda | La base garantiza "un solo me gusta"; la fecha de cada uno alimenta las estadísticas del Sprint 5 |
@@ -90,14 +96,50 @@ en cuenta desde el diseño: las colecciones que necesitan sus estadísticas (`in
 
 **Objetivo:** que el Sprint 1 arranque escribiendo código, no creando cuentas.
 
-- [ ] Repo nuevo en GitHub con `backend/` y `frontend/`
-- [ ] `nest new backend` (NestJS 12, igual que `ejercicio-1`)
-- [ ] `ng new frontend` (Angular 22, standalone, igual que el TP-1)
-- [ ] Base `potrero-libre` en el cluster de Atlas y `MONGO_URI` en el `.env` (que no se sube)
-- [ ] Cuenta de Cloudinary y sus tres claves en el `.env`
-- [ ] Proyecto de Firebase Hosting para el front
-- [ ] Identidad visual: paleta (verde césped, blanco de cal…), tipografía y logo de "Potrero Libre"
-- [ ] Favicon propio
+- [x] Repo nuevo en GitHub con `backend/` y `frontend/`
+- [ ] `nest new backend` (NestJS 12, igual que `ejercicio-1`) — a confirmar al revisar el repo
+- [ ] `ng new frontend` (Angular 22, standalone, igual que el TP-1) — a confirmar al revisar el repo
+- [x] Base `potrero-libre` en el cluster de Atlas y `MONGO_URI` en el `.env` (que no se sube)
+- [x] Cuenta de Cloudinary creada
+- [ ] Las tres claves de Cloudinary en el `.env` → **pasa al Sprint 1**, cuando se vea el tema
+- [ ] Proyecto de Firebase Hosting → **pasa al final del Sprint 1**, con algo para mostrar
+- [x] Logo de "Potrero Libre"
+- [x] Identidad visual: paleta tomada del logo (ver la sección siguiente)
+- [x] Favicon propio: la marca "PL" sin el texto, en `identidad-visual/`
+
+---
+
+## Identidad visual
+
+Sale del logo (`identidad-visual/logo-original.webp`). Los colores se midieron sobre los
+píxeles de la imagen, no a ojo.
+
+| Token | Color | Uso |
+|---|---|---|
+| `--fondo` | `#061420` | Fondo de la aplicación (el azul noche del logo) |
+| `--superficie` | `#0d2131` | Tarjetas, publicaciones, modales |
+| `--superficie-alta` | `#15304a` | Bordes, separadores, elementos encima de una tarjeta |
+| `--verde` | `#3dda45` | Color principal: botones, me gusta, enlaces, foco |
+| `--azul` | `#05aff9` | Color secundario: acciones de información, etiquetas |
+| `--texto` | `#f2f5f8` | Texto principal |
+| `--texto-suave` | `#9db2c7` | Fechas, ayudas, texto secundario |
+| `--error` | `#ff6b6b` | Errores de formulario y mensajes de rechazo |
+| `--aviso` | `#ffc940` | Avisos (por ejemplo, el modal de "quedan 5 minutos") |
+
+**Contrastes medidos (WCAG):** todos los textos dan AA o más. Texto sobre fondo: 17:1;
+verde sobre fondo: 10:1; azul sobre tarjeta: 6,7:1; texto suave sobre tarjeta: 7,5:1.
+
+**Regla importante:** el **texto blanco sobre verde no se lee** (1,9:1). Los botones verdes
+llevan el texto en `--fondo` (10:1).
+
+**Archivos** (en `identidad-visual/`, para copiar a `frontend/public/`):
+
+| Archivo | Para qué |
+|---|---|
+| `favicon.ico` | Favicon de la pestaña (16, 32 y 48 px). Solo la marca: el texto "POTRERO LIBRE" no se lee a ese tamaño |
+| `apple-touch-icon.png` | Ícono de 180 px para cuando se agrega a la pantalla de inicio en iPhone |
+| `icono-512.png` | Base para los íconos de la PWA del Sprint 4 |
+| `logo-potrero-libre.png` | Logo completo (600 px) para las pantallas de login y registro |
 
 ---
 
@@ -113,7 +155,10 @@ en cuenta desde el diseño: las colecciones que necesitan sus estadísticas (`in
 - [ ] **`POST /auth/registro`** (`multipart/form-data`):
   - [ ] DTO con todas las validaciones (contraseña: 8 caracteres, una mayúscula y un número)
   - [ ] Contraseña encriptada con **bcrypt**
-  - [ ] Imagen recibida con `FileInterceptor` y subida a Cloudinary; se guarda la URL
+  - [ ] Imagen recibida con `FileInterceptor`; se guarda la URL. La subida vive en un servicio
+        propio (`ImagenesService.subir(archivo)` → URL): si Cloudinary todavía no se vio en
+        clase, empieza guardando en una carpeta del back y después se cambia **solo ese
+        servicio** por Cloudinary, sin tocar el registro
   - [ ] Email o username repetido → **409**
   - [ ] Respuesta **201** con el usuario **sin** la contraseña y con el token
 - [ ] **`POST /auth/login`**:
@@ -129,7 +174,8 @@ en cuenta desde el diseño: las colecciones que necesitan sus estadísticas (`in
 - [ ] **Registro:** nombre, apellido, correo, nombre de usuario, contraseña, repetir contraseña,
       fecha de nacimiento, descripción breve, imagen de perfil (campo file) y **tipo de cuenta**
 - [ ] Validador propio de contraseña y validación cruzada de "repetir contraseña"
-- [ ] Deploy en Firebase Hosting y favicon propio
+- [ ] Favicon propio (`favicon.ico` de `identidad-visual/`) y paleta como tokens en `:root`
+- [ ] Al cierre del sprint: proyecto de Firebase Hosting y deploy
 
 **Nuevo en este sprint:** bcrypt, subida de archivos con `FileInterceptor`, Cloudinary, y
 validar un `multipart` (todos los campos llegan como texto: la fecha hay que transformarla).
@@ -274,5 +320,5 @@ ve el motivo; los tres gráficos cambian al mover el rango de fechas.
 | El Sprint 4 es el más cargado | Tiene el tramo más largo (7 días), avance a mitad de camino el 10/11 y el colchón del 13 al 18 |
 | Los Sprints 1 y 3 tienen tramos cortos (2 o 3 días) | El 1 arranca con todo creado en el Sprint 0; el 3 reutiliza la sesión del TP-1 (`provideAppInitializer`, guards) |
 | El hosting gratuito del back "se duerme" y tarda en responder | Avisarlo en la defensa y abrir la app unos minutos antes |
-| Subir imágenes en `multipart` es nuevo | Se hace en el Sprint 1, cuando todavía hay margen |
+| Subir imágenes en `multipart` es nuevo, y Cloudinary todavía no se vio en clase | Se hace en el Sprint 1, cuando todavía hay margen. `ImagenesService` permite arrancar guardando en el back y pasar a Cloudinary después, antes del deploy del back |
 | El enunciado pide en el Sprint 2 mostrar comentarios que se crean en el 3 | El modelo de comentarios se crea en el Sprint 2 |
