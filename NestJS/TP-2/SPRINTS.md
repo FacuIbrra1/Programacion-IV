@@ -195,29 +195,59 @@ llevan el texto en `--fondo` (10:1).
 - [x] Schema `Usuario` con `perfil` (por defecto `usuario`), `tipo` y `activo`
 - [x] `ValidationPipe` global con `whitelist`, `forbidNonWhitelisted` y `transform`
 - [x] CORS con `app.enableCors()`
-- [ ] **`POST /auth/registro`** (`multipart/form-data`):
-  - [ ] DTO con todas las validaciones: `@IsIn` para el tipo, `@Matches` para la contraseña
+- [x] **`POST /auth/registro`** (`multipart/form-data`):
+  - [x] DTO con todas las validaciones: `@IsIn` para el tipo, `@Matches` para la contraseña
         (8 caracteres, una mayúscula y un número) y `@IsDateString` para la fecha
-  - [ ] Contraseña encriptada con **bcrypt**
-  - [ ] Imagen recibida con `FileInterceptor` y subida a **Cloudinary**, siguiendo el ejemplo
-        del profe; se guarda la URL
-  - [ ] Email o username repetido → **409** (`findOne` antes de crear + `ConflictException`)
-  - [ ] Respuesta **201** con el usuario **sin** la contraseña y con el token
-- [ ] **`POST /auth/login`**:
-  - [ ] Credenciales incorrectas → **401**
-  - [ ] Respuesta con todos los datos del usuario (sin contraseña) y el token
-- [ ] `JwtModule` con el secreto leído del `.env`, no escrito en el código
+  - [x] Contraseña encriptada con **bcrypt**
+  - [x] Imagen recibida con `FileInterceptor` (obligatoria, solo imágenes, hasta 2 MB → 413)
+        y subida a **Cloudinary**; se guarda la URL. ⏳ Revisar contra el ejemplo del profe
+  - [x] Email o username repetido → **409** (`findOne` antes de crear + `ConflictException`)
+  - [x] Respuesta **201** con el usuario **sin** la contraseña y con el token
+- [x] **`POST /auth/login`**:
+  - [x] Credenciales incorrectas → **401** (mismo mensaje para correo y contraseña)
+  - [x] Respuesta **200** con todos los datos del usuario (sin contraseña) y el token
+- [x] `JwtModule` en `AppModule` (`global: true`), con el secreto leído del `.env`; el token dura 15 minutos
 - [ ] Recomendado: primer deploy del back en **Vercel**
 
 ### Front
-- [ ] Pantallas: **Registro**, **Login**, **Publicaciones** y **Mi Perfil**
-- [ ] Navegación entre pantallas, sin restricciones de acceso todavía
-- [ ] **Login:** formulario con validaciones y mensajes
-- [ ] **Registro:** nombre, apellido, correo, nombre de usuario, contraseña, repetir contraseña,
+- [x] Pantallas: **Registro**, **Login**, **Publicaciones** y **Mi Perfil** (las dos últimas,
+      con el contenido del Sprint 2 marcado como "próximamente")
+- [x] Navegación entre pantallas, sin restricciones de acceso todavía
+- [x] **Login:** formulario con validaciones y mensajes
+- [x] **Registro:** nombre, apellido, correo, nombre de usuario, contraseña, repetir contraseña,
       fecha de nacimiento, descripción breve, imagen de perfil (campo file) y **tipo de cuenta**
-- [ ] Validador propio de contraseña y validación cruzada de "repetir contraseña"
-- [ ] Favicon propio (`favicon.ico` de `identidad-visual/`) y paleta como tokens en `:root`
-- [ ] Al cierre del sprint: proyecto en **Vercel** y deploy
+- [x] Validador propio de contraseña y validación cruzada de "repetir contraseña"
+- [x] Favicon propio (`favicon.ico` de `identidad-visual/`) y paleta como tokens en `:root`
+- [x] Los errores del servidor se muestran en la pantalla (nunca con `alert()`)
+- [ ] Al cierre del sprint: proyecto en **Vercel** y deploy (`vercel.json` ya está en `frontend/`)
+
+**El código completo del Sprint 1** está en `backend/` y `frontend/`, dentro de esta misma
+carpeta, para copiarlo al repo del TP.
+
+### Conceptos nuevos que usa el Sprint 1 (a revisar)
+
+Además de los 8 decididos el 27/10, el código usa estas piezas que no aparecen tal cual en los
+ejemplos de clase:
+
+| Dónde | Qué | Por qué |
+|---|---|---|
+| Back | `JwtModule.register` en `AppModule` y no en `AutenticacionModule` | Ese archivo se carga antes que el `.env`: el secreto llegaría vacío |
+| Back | `"multer"` en `types` del `tsconfig.json` | Para que TypeScript reconozca `Express.Multer.File` |
+| Back | `@HttpCode(200)` en el login | Se vio con `@HttpCode(204)`; un POST responde 201 por defecto |
+| Back | `BadRequestException` | Igual que `UnauthorizedException` y `ConflictException`, con 400 |
+| Front | `FormData` | La forma de mandar `multipart/form-data` desde el navegador |
+| Front | `(change)` en el campo file y `input.files` | El campo file no funciona con `formControlName` |
+| Front | Validador a nivel formulario (`{ validators: passwordsIguales }`) | La validación cruzada compara dos campos |
+| Front | `markAllAsTouched()` | Muestra todos los mensajes al tocar "Ingresar" o "Crear cuenta" con el formulario incompleto |
+
+### Para decidir más adelante
+
+- **URL del back en el front** (`frontend/src/app/api.ts`): hoy es `http://localhost:3000`; al hacer
+  el deploy, va la del back en Vercel.
+- **Espacios al principio o al final desde Postman:** el front los recorta, pero un
+  `username` como `" lioperez"` mandado a mano esquiva el 409 y termina en un 500.
+- **Fecha de nacimiento futura:** hoy se acepta.
+- **Usuario deshabilitado en el login:** es del Sprint 4.
 
 **Nuevo en este sprint:** bcrypt, subida de archivos con `FileInterceptor`, Cloudinary, y
 validar un `multipart` (todos los campos llegan como texto: la fecha se valida con
