@@ -25,12 +25,12 @@ Si algo hace falta sí o sí y no se vio, se anota acá y se decide antes de usa
 | 4 | Encriptar la contraseña (en clase solo se mencionó en un comentario) | "La contraseña debe quedar encriptada" | 1 | ✅ **bcrypt** |
 | 5 | Recibir un archivo | Imagen de perfil en el registro | 1 | ✅ **`multipart/form-data` + `FileInterceptor`** (los interceptores se vieron el 27/10) |
 | 6 | Guardar la imagen | "Guardarla apropiadamente y guardar la URL" | 1 | ✅ **Cloudinary** (visto en clase el 27/10) |
-| 7 | Responder 409 ante un correo o usuario repetido | Status correctos: hoy un repetido responde 500 | 1 | ⏳ **A decidir** (opciones abajo) |
+| 7 | Responder 409 ante un correo o usuario repetido | Status correctos: sin esto, un repetido responde 500 | 1 | ✅ **Opción A**: `findOne` antes de crear + `ConflictException` |
 | 8 | CORS | Que el navegador deje al front de Angular llamar al back | 1 | ✅ **`app.enableCors()`** sin opciones: la forma más sencilla |
 
-**Opciones para el punto 7:**
+**Opciones para el punto 7** (se eligió la A):
 
-- **A — Buscar antes de crear (sugerida):** `findOne({ email })` y `findOne({ username })` en el
+- **A — Buscar antes de crear (elegida):** `findOne({ email })` y `findOne({ username })` en el
   servicio y, si existe, `throw new ConflictException('...')`. Casi todo es visto: el `findOne`
   por correo está en el login del ejemplo de cookies, lanzar una excepción está en su guard
   (`UnauthorizedException`) y el status 409 (`HttpStatus.CONFLICT`) apareció en `nest1`. Además
@@ -191,17 +191,17 @@ llevan el texto en `--fondo` (10:1).
 **Objetivo:** un usuario se registra con su foto, inicia sesión y navega las cuatro pantallas.
 
 ### Back
-- [ ] Módulos `usuarios`, `autenticacion` y `publicaciones` (este último puede quedar vacío)
-- [ ] Schema `Usuario` con `perfil` (por defecto `usuario`), `tipo` y `activo`
-- [ ] `ValidationPipe` global con `whitelist`, `forbidNonWhitelisted` y `transform`
-- [ ] CORS con `app.enableCors()`
+- [x] Módulos `usuarios`, `autenticacion` y `publicaciones` (este último puede quedar vacío)
+- [x] Schema `Usuario` con `perfil` (por defecto `usuario`), `tipo` y `activo`
+- [x] `ValidationPipe` global con `whitelist`, `forbidNonWhitelisted` y `transform`
+- [x] CORS con `app.enableCors()`
 - [ ] **`POST /auth/registro`** (`multipart/form-data`):
   - [ ] DTO con todas las validaciones: `@IsIn` para el tipo, `@Matches` para la contraseña
         (8 caracteres, una mayúscula y un número) y `@IsDateString` para la fecha
   - [ ] Contraseña encriptada con **bcrypt**
   - [ ] Imagen recibida con `FileInterceptor` y subida a **Cloudinary**, siguiendo el ejemplo
         del profe; se guarda la URL
-  - [ ] Email o username repetido → **409** (cómo: a decidir, punto 7 de la regla)
+  - [ ] Email o username repetido → **409** (`findOne` antes de crear + `ConflictException`)
   - [ ] Respuesta **201** con el usuario **sin** la contraseña y con el token
 - [ ] **`POST /auth/login`**:
   - [ ] Credenciales incorrectas → **401**
