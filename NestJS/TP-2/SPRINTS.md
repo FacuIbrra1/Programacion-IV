@@ -5,7 +5,7 @@
 **Idea:** red social de fútbol amateur. Jugadores sin club, directores técnicos y clubes
 (administrados por su delegado) se encuentran, publican y se siguen.
 
-**Stack:** Angular 22 (front) · NestJS 12 (back) · MongoDB Atlas · JWT.
+**Stack:** Angular 22 (front) · NestJS 12 (back) · MongoDB Atlas · JWT · Cloudinary · deploy en Vercel.
 
 ---
 
@@ -15,18 +15,39 @@
 el repositorio Programacion-IV (ejemplos de clase, ejercicios y Resúmenes de Angular y NestJS).
 Si algo hace falta sí o sí y no se vio, se anota acá y se decide antes de usarlo.
 
-### Conceptos no vistos que el enunciado exige
+### Conceptos no vistos que el enunciado exige (decididos el 27/10)
 
-| # | Concepto | Para qué lo pide el TP | Sprint | Estado |
+| # | Concepto | Para qué lo pide el TP | Sprint | Decisión |
 |---|---|---|---|---|
-| 1 | Validar que `tipo` sea jugador, dt o club (`@IsIn` o un control en el servicio) | Responder 400 y no 500 ante un tipo inválido | 1 | ⏳ A decidir |
-| 2 | Contraseña con al menos una mayúscula y un número (expresión regular o recorrer los caracteres) | "8 caracteres, una mayúscula y un número" | 1 | ⏳ A decidir |
-| 3 | Validar que la fecha de nacimiento sea una fecha real (`@IsDateString` o un control en el servicio) | Responder 400 y no 500 | 1 | ⏳ A decidir |
-| 4 | Encriptar la contraseña (`bcrypt`; en clase solo se mencionó en un comentario) | "La contraseña debe quedar encriptada" | 1 | ⏳ A decidir |
-| 5 | Recibir un archivo (`multipart/form-data`, `FileInterceptor`) | Imagen de perfil en el registro | 1 | ⏳ A decidir |
-| 6 | Guardar la imagen (Cloudinary, o una carpeta del back servida como estática) | "Guardarla apropiadamente y guardar la URL" | 1 | ⏳ A decidir |
-| 7 | Responder 409 ante un correo o usuario repetido (detectar el error `11000` de Mongo) | Status correctos: hoy un repetido responde 500 | 1 | ⏳ A decidir |
-| 8 | CORS (`app.enableCors`) | Que el navegador deje al front de Angular llamar al back | 1 (al conectar el front) | ⏳ A decidir |
+| 1 | Validar que `tipo` sea jugador, dt o club | Responder 400 y no 500 ante un tipo inválido | 1 | ✅ **`@IsIn`** en el DTO |
+| 2 | Contraseña con al menos una mayúscula y un número | "8 caracteres, una mayúscula y un número" | 1 | ✅ **Expresión regular** (`@Matches`) en el DTO |
+| 3 | Validar que la fecha de nacimiento sea una fecha real | Responder 400 y no 500 | 1 | ✅ **`@IsDateString`** en el DTO |
+| 4 | Encriptar la contraseña (en clase solo se mencionó en un comentario) | "La contraseña debe quedar encriptada" | 1 | ✅ **bcrypt** |
+| 5 | Recibir un archivo | Imagen de perfil en el registro | 1 | ✅ **`multipart/form-data` + `FileInterceptor`** (los interceptores se vieron el 27/10) |
+| 6 | Guardar la imagen | "Guardarla apropiadamente y guardar la URL" | 1 | ✅ **Cloudinary** (visto en clase el 27/10) |
+| 7 | Responder 409 ante un correo o usuario repetido | Status correctos: hoy un repetido responde 500 | 1 | ⏳ **A decidir** (opciones abajo) |
+| 8 | CORS | Que el navegador deje al front de Angular llamar al back | 1 | ✅ **`app.enableCors()`** sin opciones: la forma más sencilla |
+
+**Opciones para el punto 7:**
+
+- **A — Buscar antes de crear (sugerida):** `findOne({ email })` y `findOne({ username })` en el
+  servicio y, si existe, `throw new ConflictException('...')`. Casi todo es visto: el `findOne`
+  por correo está en el login del ejemplo de cookies, lanzar una excepción está en su guard
+  (`UnauthorizedException`) y el status 409 (`HttpStatus.CONFLICT`) apareció en `nest1`. Además
+  permite decir cuál de los dos campos está repetido.
+- **B — Atrapar el error de Mongo:** `try/catch` alrededor del `create` y, si `error.code === 11000`,
+  lanzar el 409. El `try/catch` se vio en el guard, pero el código `11000` no.
+
+En los dos casos el `unique` del schema se queda: es la última barrera si dos registros llegan
+al mismo tiempo.
+
+### Temas vistos en la clase del 27/10
+
+| Tema | Dónde se usa en el TP | Ejemplo del profe |
+|---|---|---|
+| Conexión con **Cloudinary** en un proyecto de Nest | Imagen de perfil (Sprint 1) e imagen de las publicaciones (Sprint 2) | ⏳ Se sube a Programacion-IV cuando esté |
+| **Interceptor** (el equivalente al *middleware* de Node) | `FileInterceptor` para recibir la imagen | ⏳ Se sube a Programacion-IV cuando esté |
+| **Deploy en Vercel** (reemplaza a Firebase) | Front y back del TP-2 | — |
 
 ---
 
@@ -90,12 +111,13 @@ en cuenta desde el diseño: las colecciones que necesitan sus estadísticas (`in
 | 2 | **La cuenta de un club la maneja su delegado** ⏳ *por definirse con la cátedra* | El registro del TP pide nombre, apellido y fecha de nacimiento: son los del delegado. Los datos del club van en el perfil |
 | 3 | Token en el header **`Authorization: Bearer`** + interceptor en Angular ⏳ *por definirse con la cátedra* | Front y back en dominios distintos: una cookie sería de terceros y los navegadores la bloquean |
 | 4 | **JWT desde el Sprint 1**, aunque el enunciado lo pida en el 3 | En el Sprint 2 hay que saber quién da me gusta y quién borra |
-| 5 | Imágenes en **Cloudinary** | El disco de un hosting gratuito se borra en cada deploy |
+| 5 | Imágenes en **Cloudinary** | Se vio en clase el 27/10, y el back en Vercel no tiene un disco propio donde guardar archivos |
 | 6 | `likes`, `comentarios`, `guardados` y `compartidos` en **colecciones propias**, con índice único donde corresponda | La base garantiza "un solo me gusta"; la fecha de cada uno alimenta las estadísticas del Sprint 5 |
 | 7 | **Login por correo** (único). El nombre de usuario también es único | Lo exige el enunciado para el campo que se use en el login |
 | 8 | Repo nuevo para el TP-2 con `backend/` y `frontend/` | Igual que el TP-1: cada proyecto con su deploy |
 | 9 | **Nada de `alert()` ni `confirm()`**: siempre modales | Lo prohíbe el enunciado (ojo: el `formGuard` del TP-1 usaba `confirm()`) |
 | 10 | **Todas las pantallas requieren sesión** (salvo login y registro) | "Solo se puede acceder a la aplicación estando registrado o logueado" |
+| 11 | **Deploy en Vercel**, front y back (no Firebase) | Lo indicó la cátedra en la clase del 27/10 |
 
 ---
 
@@ -122,8 +144,8 @@ en cuenta desde el diseño: las colecciones que necesitan sus estadísticas (`in
 - [x] `ng new frontend` (Angular 22, standalone, igual que el TP-1)
 - [x] Base `potrero-libre` en el cluster de Atlas y `MONGO_URI` en el `.env` (que no se sube)
 - [x] Cuenta de Cloudinary creada
-- [ ] Las tres claves de Cloudinary en el `.env` → **pasa al Sprint 1**, cuando se vea el tema
-- [ ] Proyecto de Firebase Hosting → **pasa al final del Sprint 1**, con algo para mostrar
+- [ ] Las tres claves de Cloudinary en el `.env` → **pasa al Sprint 1** (el tema se vio el 27/10)
+- [ ] Proyecto en **Vercel** (antes Firebase Hosting) → **pasa al final del Sprint 1**, con algo para mostrar
 - [x] Logo de "Potrero Libre"
 - [x] Identidad visual: paleta tomada del logo (ver la sección siguiente)
 - [x] Favicon propio: la marca "PL" sin el texto, en `identidad-visual/`
@@ -172,21 +194,20 @@ llevan el texto en `--fondo` (10:1).
 - [ ] Módulos `usuarios`, `autenticacion` y `publicaciones` (este último puede quedar vacío)
 - [ ] Schema `Usuario` con `perfil` (por defecto `usuario`), `tipo` y `activo`
 - [ ] `ValidationPipe` global con `whitelist`, `forbidNonWhitelisted` y `transform`
-- [ ] CORS habilitado para el dominio del front
+- [ ] CORS con `app.enableCors()`
 - [ ] **`POST /auth/registro`** (`multipart/form-data`):
-  - [ ] DTO con todas las validaciones (contraseña: 8 caracteres, una mayúscula y un número)
+  - [ ] DTO con todas las validaciones: `@IsIn` para el tipo, `@Matches` para la contraseña
+        (8 caracteres, una mayúscula y un número) y `@IsDateString` para la fecha
   - [ ] Contraseña encriptada con **bcrypt**
-  - [ ] Imagen recibida con `FileInterceptor`; se guarda la URL. La subida vive en un servicio
-        propio (`ImagenesService.subir(archivo)` → URL): si Cloudinary todavía no se vio en
-        clase, empieza guardando en una carpeta del back y después se cambia **solo ese
-        servicio** por Cloudinary, sin tocar el registro
-  - [ ] Email o username repetido → **409**
+  - [ ] Imagen recibida con `FileInterceptor` y subida a **Cloudinary**, siguiendo el ejemplo
+        del profe; se guarda la URL
+  - [ ] Email o username repetido → **409** (cómo: a decidir, punto 7 de la regla)
   - [ ] Respuesta **201** con el usuario **sin** la contraseña y con el token
 - [ ] **`POST /auth/login`**:
   - [ ] Credenciales incorrectas → **401**
   - [ ] Respuesta con todos los datos del usuario (sin contraseña) y el token
 - [ ] `JwtModule` con el secreto leído del `.env`, no escrito en el código
-- [ ] Recomendado: primer deploy del back (Render o Railway)
+- [ ] Recomendado: primer deploy del back en **Vercel**
 
 ### Front
 - [ ] Pantallas: **Registro**, **Login**, **Publicaciones** y **Mi Perfil**
@@ -196,10 +217,11 @@ llevan el texto en `--fondo` (10:1).
       fecha de nacimiento, descripción breve, imagen de perfil (campo file) y **tipo de cuenta**
 - [ ] Validador propio de contraseña y validación cruzada de "repetir contraseña"
 - [ ] Favicon propio (`favicon.ico` de `identidad-visual/`) y paleta como tokens en `:root`
-- [ ] Al cierre del sprint: proyecto de Firebase Hosting y deploy
+- [ ] Al cierre del sprint: proyecto en **Vercel** y deploy
 
 **Nuevo en este sprint:** bcrypt, subida de archivos con `FileInterceptor`, Cloudinary, y
-validar un `multipart` (todos los campos llegan como texto: la fecha hay que transformarla).
+validar un `multipart` (todos los campos llegan como texto: la fecha se valida con
+`@IsDateString` y Mongoose la convierte a `Date` al guardar).
 
 **Definición de hecho:** registrarse con foto desde la URL pública, ver la foto guardada en
 Cloudinary y la contraseña encriptada en Atlas, e iniciar sesión con esa cuenta.
@@ -340,6 +362,6 @@ ve el motivo; los tres gráficos cambian al mover el rango de fechas.
 |---|---|
 | El Sprint 4 es el más cargado | Tiene el tramo más largo (7 días), avance a mitad de camino el 10/11 y el colchón del 13 al 18 |
 | Los Sprints 1 y 3 tienen tramos cortos (2 o 3 días) | El 1 arranca con todo creado en el Sprint 0; el 3 reutiliza la sesión del TP-1 (`provideAppInitializer`, guards) |
-| El hosting gratuito del back "se duerme" y tarda en responder | Avisarlo en la defensa y abrir la app unos minutos antes |
-| Subir imágenes en `multipart` es nuevo, y Cloudinary todavía no se vio en clase | Se hace en el Sprint 1, cuando todavía hay margen. `ImagenesService` permite arrancar guardando en el back y pasar a Cloudinary después, antes del deploy del back |
+| En el plan gratuito de Vercel, la primera petición después de un rato puede tardar (el back arranca "en frío") | Avisarlo en la defensa y abrir la app unos minutos antes |
+| Subir imágenes en `multipart` es nuevo | Cloudinary y los interceptores se vieron el 27/10: se sigue el ejemplo del profe apenas esté en Programacion-IV |
 | El enunciado pide en el Sprint 2 mostrar comentarios que se crean en el 3 | El modelo de comentarios se crea en el Sprint 2 |
