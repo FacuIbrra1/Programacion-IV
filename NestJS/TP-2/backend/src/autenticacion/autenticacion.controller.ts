@@ -7,6 +7,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
 import { AutenticacionService } from './autenticacion.service.js';
 import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto.js';
 import { LoginDto } from './dto/login.dto.js';
@@ -16,10 +17,14 @@ export class AutenticacionController {
   constructor(private readonly autenticacionService: AutenticacionService) {}
 
   // multipart/form-data: los datos llegan en el body y la foto en el campo "imagen".
+  // memoryStorage (como en el ejemplo de clase): la imagen queda en memoria para Cloudinary.
   // limits: hasta 2 MB; si pesa más, responde 413.
   @Post('registro')
   @UseInterceptors(
-    FileInterceptor('imagen', { limits: { fileSize: 2 * 1024 * 1024 } }),
+    FileInterceptor('imagen', {
+      storage: memoryStorage(),
+      limits: { fileSize: 2 * 1024 * 1024 },
+    }),
   )
   registro(
     @Body() createUsuarioDto: CreateUsuarioDto,

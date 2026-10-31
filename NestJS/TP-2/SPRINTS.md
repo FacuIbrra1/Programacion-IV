@@ -45,9 +45,27 @@ al mismo tiempo.
 
 | Tema | Dónde se usa en el TP | Ejemplo del profe |
 |---|---|---|
-| Conexión con **Cloudinary** en un proyecto de Nest | Imagen de perfil (Sprint 1) e imagen de las publicaciones (Sprint 2) | ⏳ Se sube a Programacion-IV cuando esté |
-| **Interceptor** (el equivalente al *middleware* de Node) | `FileInterceptor` para recibir la imagen | ⏳ Se sube a Programacion-IV cuando esté |
+| Conexión con **Cloudinary** en un proyecto de Nest | Imagen de perfil (Sprint 1) e imagen de las publicaciones (Sprint 2) | ✅ `Ejemplos en Clase/cloudinary` |
+| **Interceptor** (el equivalente al *middleware* de Node) | `FileInterceptor` para recibir la imagen | ✅ El mismo ejemplo de Cloudinary |
 | **Deploy en Vercel** (reemplaza a Firebase) | Front y back del TP-2 | — |
+
+**Cómo se aplicó el ejemplo de Cloudinary** (`backend/src/cloudinary/cloudinary.service.ts`): igual
+que el del profe, `upload_stream` envuelto en una `Promise`, `FileInterceptor` con `memoryStorage()`
+y `resource_type: 'image'`. Hay tres diferencias, a propósito:
+
+| En el ejemplo | En el TP | Por qué |
+|---|---|---|
+| `cloudinary.config(...)` arriba del archivo | Dentro del constructor del servicio | Arriba del archivo se ejecuta antes de que se cargue el `.env`: las claves llegarían vacías |
+| `public_id` = nombre del archivo | Sin `public_id` (Cloudinary pone un nombre único) | Dos usuarios que suban `foto.jpg` se pisarían la imagen |
+| Se sube en el controller, antes de todo | Se sube en el servicio, después de validar | Un registro que termina en 400 o 409 no deja una imagen suelta en Cloudinary |
+
+### Temas vistos en la clase del 29/10
+
+| Tema | Dónde se usa en el TP | Ejemplo del profe |
+|---|---|---|
+| **Interceptores en Angular**: agregar el encabezado de autenticación a los pedidos que van al back | Sprint 2: el token en `Authorization: Bearer` | ⏳ Si está, subirlo a Programacion-IV |
+| **Interceptores en Angular**: reintentar pedidos fallidos con retroceso exponencial | Sprint 2: solo los `GET` y pocas veces (algo sencillo) | ⏳ Si está, subirlo a Programacion-IV |
+| **Interceptores en Nest** | Solo `FileInterceptor`: no hace falta otro | — |
 
 ---
 
@@ -60,27 +78,27 @@ profesor. Cada sprint termina el día de una clase, así se presenta apenas est�
 |---|---|---|
 | 26/10 | lunes | Sprint 0: decisiones, cuentas y proyectos creados |
 | **27/10** | martes | **Clase — presentación del Sprint 0** (idea, plan y decisiones) y consultas |
-| 27/10 → 29/10 | mar → jue | **Sprint 1** — registro, login y base de los dos proyectos |
-| **29/10** | jueves | **Clase — presentación del Sprint 1** |
-| 30/10 → 03/11 | vie → mar | **Sprint 2** — publicaciones y me gusta |
-| **03/11** | martes | **Clase — presentación del Sprint 2** |
-| 04/11 → 05/11 | mié → jue | **Sprint 3** — comentarios y sesión con JWT de 15 minutos |
-| **05/11** | jueves | **Clase — presentación del Sprint 3** |
-| 06/11 → 12/11 | vie → jue | **Sprint 4** — administrador, estadísticas, PWA, pipes y directivas |
-| 10/11 | martes | Clase — avance del Sprint 4 (back del administrador y estadísticas) |
-| **12/11** | jueves | **Clase — presentación del Sprint 4 · Finalización estimada** |
-| 13/11 → 18/11 | vie → mié | Colchón: pruebas en la URL pública, README y preparación de la defensa |
-| 17/11 | martes | Clase — última consulta antes de la entrega |
+| 27/10 → 30/10 | mar → vie | **Sprint 1** — registro, login y base de los dos proyectos ✅ código terminado |
+| 29/10 | jueves | Clase — interceptores en Angular y Nest (el Sprint 1 no llegó a presentarse) |
+| 30/10 → 05/11 | vie → jue | **Sprint 2** — publicaciones y me gusta |
+| **03/11** | martes | **Clase — presentación del Sprint 1** |
+| **05/11** | jueves | **Clase — presentación del Sprint 2** |
+| 06/11 → 10/11 | vie → mar | **Sprint 3** — comentarios y sesión con JWT de 15 minutos |
+| **10/11** | martes | **Clase — presentación del Sprint 3** |
+| 11/11 → 17/11 | mié → mar | **Sprint 4** — administrador, estadísticas, PWA, pipes y directivas |
+| 12/11 | jueves | Clase — avance del Sprint 4 (back del administrador y estadísticas) |
+| **17/11** | martes | **Clase — presentación del Sprint 4 · Finalización estimada** |
+| 18/11 | miércoles | Colchón: pruebas en la URL pública, README y preparación de la defensa |
 | **19/11** | jueves | **Clase — Entrega y defensa** |
 
-**Cómo se repartieron los días.** Entre clase y clase hay 2 días (martes → jueves) o 5
-(jueves → martes, con el fin de semana). Los dos sprints más pesados se llevan los tramos
-largos: el **Sprint 2** tiene 5 días y el **Sprint 4**, 7, con una presentación de avance
-en el medio. Los Sprints 1 y 3 son más acotados y entran en tramos de 2 o 3 días; el 1 además
-arranca con las cuentas y los proyectos ya creados en el Sprint 0.
+**Reprogramación del 30/10 (propuesta, a confirmar).** El Sprint 1 no se presentó el 29/10 y
+pasa al martes 03/11. Desde ahí, cada sprint se presenta una clase más tarde que en el plan
+original: el 2 el 05/11, el 3 el 10/11 y el 4 el 17/11. La entrega del 19/11 no se mueve.
 
-El colchón del 13 al 18 existe para absorber atrasos: si algo no llegó al 12/11, se termina
-ahí, no se recorta. La clase del 17/11 sirve para una última consulta.
+**El costo:** la finalización estimada pasa del 12/11 al 17/11, y el colchón de 6 días queda en
+uno (el 18/11). Para recuperar margen, conviene adelantar el Sprint 2 todo lo posible: ya tiene
+el modelo de datos pensado y el front base hecho. Si el Sprint 2 se presenta junto con el 1
+el 03/11, todo vuelve a correrse una clase antes.
 
 ### Consultas a la cátedra (27/10)
 
@@ -186,7 +204,7 @@ llevan el texto en `--fondo` (10:1).
 
 ---
 
-## Sprint 1 — Registro y login · 27/10 → 29/10 · se presenta el jue 29/10
+## Sprint 1 — Registro y login · 27/10 → 30/10 · se presenta el mar 03/11
 
 **Objetivo:** un usuario se registra con su foto, inicia sesión y navega las cuatro pantallas.
 
@@ -232,7 +250,7 @@ ejemplos de clase:
 | Dónde | Qué | Por qué |
 |---|---|---|
 | Back | `JwtModule.register` en `AppModule` y no en `AutenticacionModule` | Ese archivo se carga antes que el `.env`: el secreto llegaría vacío |
-| Back | `"multer"` en `types` del `tsconfig.json` | Para que TypeScript reconozca `Express.Multer.File` |
+| Back | `"express"` y `"multer"` en `types` del `tsconfig.json` | Para que TypeScript reconozca `Express.Multer.File` |
 | Back | `@HttpCode(200)` en el login | Se vio con `@HttpCode(204)`; un POST responde 201 por defecto |
 | Back | `BadRequestException` | Igual que `UnauthorizedException` y `ConflictException`, con 400 |
 | Front | `FormData` | La forma de mandar `multipart/form-data` desde el navegador |
@@ -258,7 +276,7 @@ Cloudinary y la contraseña encriptada en Atlas, e iniciar sesión con esa cuent
 
 ---
 
-## Sprint 2 — Publicaciones y me gusta · 30/10 → 03/11 · se presenta el mar 03/11
+## Sprint 2 — Publicaciones y me gusta · 30/10 → 05/11 · se presenta el jue 05/11
 
 **Objetivo:** publicar, listar, ordenar, paginar y dar me gusta.
 
@@ -278,7 +296,8 @@ Cloudinary y la contraseña encriptada en Atlas, e iniciar sesión con esa cuent
 - [ ] Back desplegado (a más tardar en este sprint)
 
 ### Front
-- [ ] Interceptor que agrega el token a cada pedido
+- [ ] Interceptor que agrega el token (`Authorization: Bearer`) a los pedidos que van al back (visto el 29/10)
+- [ ] Interceptor que reintenta los `GET` fallidos con retroceso exponencial, pocas veces (visto el 29/10)
 - [ ] Página de publicaciones: listado ordenado por fecha, cambio a "por me gusta", paginación
 - [ ] **Cada publicación es un componente**
 - [ ] Dar y quitar me gusta; borrar las publicaciones propias (con modal de confirmación)
@@ -294,7 +313,7 @@ me gusta se rechaza, y el orden "por me gusta" cambia.
 
 ---
 
-## Sprint 3 — Comentarios y sesión · 04/11 → 05/11 · se presenta el jue 05/11
+## Sprint 3 — Comentarios y sesión · 06/11 → 10/11 · se presenta el mar 10/11
 
 **Objetivo:** comentar, y una sesión de 15 minutos que avisa antes de vencer.
 
@@ -324,12 +343,12 @@ usando la app sin volver a iniciar sesión.
 
 ---
 
-## Sprint 4 — Administrador y estadísticas · 06/11 → 12/11 · se presenta el jue 12/11
+## Sprint 4 — Administrador y estadísticas · 11/11 → 17/11 · se presenta el mar 17/11
 
 **Objetivo:** el panel del administrador y cerrar los requisitos de la aplicación.
 
 **Orden sugerido:** el back primero (usuarios, guard de roles y estadísticas), para mostrarlo
-como avance en la clase del **mar 10/11**; después, el front del dashboard, la PWA, los pipes
+como avance en la clase del **jue 12/11**; después, el front del dashboard, la PWA, los pipes
 y las directivas, que ya se hicieron en el TP-1.
 
 ### Back
@@ -363,10 +382,10 @@ ve el motivo; los tres gráficos cambian al mover el rango de fechas.
 
 ---
 
-## Colchón — 13/11 → 18/11 · entrega y defensa el jue 19/11
+## Colchón — 18/11 · entrega y defensa el jue 19/11
 
 - [ ] Terminar lo que haya quedado pendiente del Sprint 4
-- [ ] Llevar las dudas que queden a la clase del **mar 17/11**
+- [ ] Llevar las dudas que queden a la clase del **mar 17/11** (la misma de la presentación del Sprint 4)
 - [ ] Recorrer el flujo completo en la URL pública, con los tres tipos de cuenta
 - [ ] Revisar que **ningún error responda 200 y ninguna respuesta correcta responda 400**
 - [ ] README con arquitectura y decisiones técnicas (como el del TP-1)
@@ -390,7 +409,8 @@ ve el motivo; los tres gráficos cambian al mover el rango de fechas.
 
 | Riesgo | Qué se hace |
 |---|---|
-| El Sprint 4 es el más cargado | Tiene el tramo más largo (7 días), avance a mitad de camino el 10/11 y el colchón del 13 al 18 |
+| Subir credenciales a un repo público (pasó el 31/10 con el `.env.example`) | El `.env.example` va siempre **sin valores**; los valores solo en el `.env`, que no se sube. Una clave que se subió se cambia en el servicio, porque queda en el historial |
+| El Sprint 4 es el más cargado | Tiene el tramo más largo (7 días) y un avance a mitad de camino el 12/11. Con la reprogramación, el colchón quedó en un día: adelantar el Sprint 2 es la forma de recuperarlo |
 | Los Sprints 1 y 3 tienen tramos cortos (2 o 3 días) | El 1 arranca con todo creado en el Sprint 0; el 3 reutiliza la sesión del TP-1 (`provideAppInitializer`, guards) |
 | En el plan gratuito de Vercel, la primera petición después de un rato puede tardar (el back arranca "en frío") | Avisarlo en la defensa y abrir la app unos minutos antes |
 | Subir imágenes en `multipart` es nuevo | Cloudinary y los interceptores se vieron el 27/10: se sigue el ejemplo del profe apenas esté en Programacion-IV |
