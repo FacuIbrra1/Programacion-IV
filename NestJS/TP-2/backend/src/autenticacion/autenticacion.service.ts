@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  ConflictException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import {BadRequestException, ConflictException, Injectable, UnauthorizedException} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
 import { UsuariosService } from '../usuarios/usuarios.service.js';
@@ -11,6 +6,7 @@ import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto.js';
 import { UsuarioDocument } from '../usuarios/entities/usuario.entity.js';
 import { CloudinaryService } from '../cloudinary/cloudinary.service.js';
 import { LoginDto } from './dto/login.dto.js';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class AutenticacionService {
@@ -20,6 +16,7 @@ export class AutenticacionService {
     private readonly jwtService: JwtService,
   ) {}
 
+ // ---- REGISTRO ----:
   async registro(
     createUsuarioDto: CreateUsuarioDto,
     imagen: Express.Multer.File,
@@ -67,6 +64,8 @@ export class AutenticacionService {
     return await this.respuestaConToken(nuevoUsuario);
   }
 
+
+ // ---- LOGIN ----:
   async login(loginDto: LoginDto) {
     const usuario = await this.usuariosService.buscarPorEmail(loginDto.email);
 
@@ -82,6 +81,7 @@ export class AutenticacionService {
     return await this.respuestaConToken(usuario);
   }
 
+  // ---- RESPUESTA CON TOKEN ----:
   // Lo que devuelven el registro y el login: el token y los datos del usuario, sin la contraseña.
   private async respuestaConToken(usuario: UsuarioDocument) {
     // El token lleva quién es (sub), su nombre de usuario y su perfil.
@@ -96,4 +96,11 @@ export class AutenticacionService {
 
     return { token: token, usuario: datosUsuario };
   }
+
+  
+  // ---- PERFIL ----:
+  async perfil(id: Types.ObjectId) {
+  return await this.usuariosService.buscarPorId(id);
+  }
+  
 }
