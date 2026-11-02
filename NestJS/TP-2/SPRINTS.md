@@ -305,11 +305,11 @@ Cloudinary y la contraseña encriptada en Atlas, e iniciar sesión con esa cuent
 | 2 | `.skip()` y `.limit()` | Paginar con `offset` y `limit` (lo pide el enunciado) | No hay una alternativa razonable | ✅ Usarlos |
 | 3 | Contador de me gusta | Poder ordenar por me gusta | **A:** campo `cantidadLikes` actualizado con `$inc` (una línea, sin errores si llegan dos a la vez) · **B:** leer, sumar 1 y guardar (visto, pero dos me gusta simultáneos pueden contar uno solo) | ✅ A: `$inc` |
 | 4 | Un solo me gusta por usuario | Responder 409 | **A:** `findOne` antes de crear, como el 409 del registro · **B:** además, índice único compuesto `(publicacion, usuario)` | ✅ A: `findOne` antes de crear |
-| 5 | `ForbiddenException` | 403 al borrar una publicación ajena | La misma familia que `UnauthorizedException` y `ConflictException` | ⏳ A decidir |
+| 5 | `ForbiddenException` | 403 al borrar una publicación ajena | La misma familia que `UnauthorizedException` y `ConflictException` | ✅ `ForbiddenException` |
 | 6 | Fecha de la publicación | Ordenar por fecha y mostrarla | **A:** `@Prop({ default: Date.now })` (`default` es visto) · **B:** `timestamps: true` | ✅ A: `default: Date.now` |
 | 7 | Sesión en `localStorage` desde ahora (en el plan era del Sprint 3) | Que el token no se pierda al recargar | `localStorage` se vio en el ejemplo de guards (`Ej-clase-5`) | ✅ Sí, desde ahora |
 | 8 | Interceptores de Angular | Token en el header y reintento de los `GET` | Vistos el 29/10, pero falta el ejemplo del profe | ✅ Sí, lo más sencillo posible |
-| 9 | `collection: 'publicaciones'` en el `@Schema` | Que la colección se llame "publicaciones" y no "publicacions" (Mongoose agrega una "s" al nombre del modelo) | Es una opción del schema, como `toJSON` | ⏳ A decidir |
+| 9 | `collection: 'publicaciones'` en el `@Schema` | Que la colección se llame "publicaciones" y no "publicacions" (Mongoose agrega una "s" al nombre del modelo) | Es una opción del schema, como `toJSON` | ✅ Agregarla |
 
 ### Back
 - [ ] `AuthGuard` que lee el token del header y deja el usuario en `request.user`
