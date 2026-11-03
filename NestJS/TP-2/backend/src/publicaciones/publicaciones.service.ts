@@ -4,6 +4,7 @@ import { Model, Types } from 'mongoose';
 import { Publicacion } from './entities/publicacion.entity.js';
 import { CreatePublicacionDto } from './dto/create-publicacion.dto.js';
 import { CloudinaryService } from '../cloudinary/cloudinary.service.js';
+import { ListarPublicacionesDto } from './dto/listar-publicaciones.dto.js';
 
 // Los datos del autor que se muestran con cada publicación (nunca la contraseña ni el correo).
 const DATOS_AUTOR = 'nombre apellido username imagenUrl tipo';
@@ -43,5 +44,39 @@ export class PublicacionesService {
 
     // Se devuelve con los datos del autor, igual que la va a mostrar el listado.
     return await this.publicacionModel.findById(nuevaPublicacion._id).populate('autor', DATOS_AUTOR)}
+
+
+    
+  // ---- LISTAR ----
+  async listar(filtros: ListarPublicacionesDto) {
+    // Los números llegan como texto en la URL. Si no vienen: desde la primera, de a 10.
+    const offset = Number(filtros.offset ?? 0);
+    const limit = Number(filtros.limit ?? 10);
+    if (limit < 1 || limit > 50) {
+      throw new BadRequestException('El limit tiene que estar entre 1 y 50');
+    }
+
+    // Qué publicaciones traer: nunca las dadas de baja, y los filtros que hayan llegado.
+    const condiciones: any = { activa: true };
+    if (filtros.usuario) {
+      condiciones.autor = filtros.usuario;
+    }
+    if (filtros.categoria) {
+      condiciones.categoria = filtros.categoria;
+    }
+
+    // Mismo formato que .select('-password'): campos separados por espacio.
+    // En sort, el "-" significa de mayor a menor.
+    // Por me gusta: las de más me gusta primero y, si empatan, la más nueva.
+    const orden =
+      filtros.orden === 'likes' ? '-cantidadLikes -fecha' : '-fecha';
+
+    return await this.publicacionModel
+      .find(condiciones)
+      .sort(orden) // Ordena.
+      .skip(offset) // Se saltea las primeras "offset" (las de las páginas anteriores).
+      .limit(limit) // Trae como máximo "limit".
+      .populate('autor', DATOS_AUTOR);
+  }
     
 }
