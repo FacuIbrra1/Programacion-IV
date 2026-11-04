@@ -163,7 +163,7 @@ en cuenta desde el diseño: las colecciones que necesitan sus estadísticas (`in
 - [x] Base `potrero-libre` en el cluster de Atlas y `MONGO_URI` en el `.env` (que no se sube)
 - [x] Cuenta de Cloudinary creada
 - [ ] Las tres claves de Cloudinary en el `.env` → **pasa al Sprint 1** (el tema se vio el 27/10)
-- [ ] Proyecto en **Vercel** (antes Firebase Hosting) → **pasa al final del Sprint 1**, con algo para mostrar
+- [x] Proyecto en **Vercel** (antes Firebase Hosting) → hecho al final del Sprint 1: front y back publicados
 - [x] Logo de "Potrero Libre"
 - [x] Identidad visual: paleta tomada del logo (ver la sección siguiente)
 - [x] Favicon propio: la marca "PL" sin el texto, en `identidad-visual/`
@@ -237,7 +237,7 @@ llevan el texto en `--fondo` (10:1).
 - [x] Validador propio de contraseña y validación cruzada de "repetir contraseña"
 - [x] Favicon propio (`favicon.ico` de `identidad-visual/`) y paleta como tokens en `:root`
 - [x] Los errores del servidor se muestran en la pantalla (nunca con `alert()`)
-- [ ] Al cierre del sprint: proyecto en **Vercel** y deploy (`vercel.json` ya está en `frontend/`)
+- [x] Deploy del front en **Vercel**: `https://potrero-libre.vercel.app` (04/11), conectado al back publicado
 
 **El código completo del Sprint 1** está en `backend/` y `frontend/`, dentro de esta misma
 carpeta, para copiarlo al repo del TP.
