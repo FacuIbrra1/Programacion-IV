@@ -78,27 +78,26 @@ profesor. Cada sprint termina el día de una clase, así se presenta apenas est�
 |---|---|---|
 | 26/10 | lunes | Sprint 0: decisiones, cuentas y proyectos creados |
 | **27/10** | martes | **Clase — presentación del Sprint 0** (idea, plan y decisiones) y consultas |
-| 27/10 → 30/10 | mar → vie | **Sprint 1** — registro, login y base de los dos proyectos ✅ código terminado |
+| 27/10 → 04/11 | mar → mié | **Sprint 1** — registro, login y base de los dos proyectos ✅ terminado y publicado en Vercel |
 | 29/10 | jueves | Clase — interceptores en Angular y Nest (el Sprint 1 no llegó a presentarse) |
 | 30/10 → 05/11 | vie → jue | **Sprint 2** — publicaciones y me gusta |
-| **03/11** | martes | **Clase — presentación del Sprint 1** |
-| **05/11** | jueves | **Clase — presentación del Sprint 2** |
-| 06/11 → 10/11 | vie → mar | **Sprint 3** — comentarios y sesión con JWT de 15 minutos |
-| **10/11** | martes | **Clase — presentación del Sprint 3** |
-| 11/11 → 17/11 | mié → mar | **Sprint 4** — administrador, estadísticas, PWA, pipes y directivas |
-| 12/11 | jueves | Clase — avance del Sprint 4 (back del administrador y estadísticas) |
-| **17/11** | martes | **Clase — presentación del Sprint 4 · Finalización estimada** |
+| 03/11 | martes | Sin clase |
+| **05/11** | jueves | **Clase — presentación de los Sprints 1 y 2** |
+| 06/11 → 12/11 | vie → jue | **Sprint 3** — comentarios y sesión con JWT de 15 minutos |
+| 10/11 | martes | Feriado: sin clase (día de trabajo) |
+| **12/11** | jueves | **Clase — presentación del Sprint 3** |
+| 13/11 → 17/11 | vie → mar | **Sprint 4** — administrador, estadísticas, PWA, pipes y directivas |
+| **17/11** | martes | **Clase — presentación del Sprint 4 · Finalización** |
 | 18/11 | miércoles | Colchón: pruebas en la URL pública, README y preparación de la defensa |
-| **19/11** | jueves | **Clase — Entrega y defensa** |
+| **19/11** | jueves | **Clase — Entrega y defensa oral** |
 
-**Reprogramación del 30/10 (propuesta, a confirmar).** El Sprint 1 no se presentó el 29/10 y
-pasa al martes 03/11. Desde ahí, cada sprint se presenta una clase más tarde que en el plan
-original: el 2 el 05/11, el 3 el 10/11 y el 4 el 17/11. La entrega del 19/11 no se mueve.
+**Cronograma confirmado (04/11).** No hubo clase el 03/11 y el 10/11 es feriado, así que la
+cátedra fijó: Sprints 1 y 2 el 05/11, Sprint 3 el 12/11, Sprint 4 el 17/11, y entrega y defensa
+oral el 19/11.
 
-**El costo:** la finalización estimada pasa del 12/11 al 17/11, y el colchón de 6 días queda en
-uno (el 18/11). Para recuperar margen, conviene adelantar el Sprint 2 todo lo posible: ya tiene
-el modelo de datos pensado y el front base hecho. Si el Sprint 2 se presenta junto con el 1
-el 03/11, todo vuelve a correrse una clase antes.
+**Cómo quedan los tiempos:** el Sprint 3 tiene 7 días (incluye el feriado) y el Sprint 4, el más
+pesado, solo 5. Conviene adelantar en el Sprint 3 lo que se pueda del Sprint 4 (por ejemplo, el
+back del administrador) y dejar el 18/11 para pruebas y la defensa.
 
 ### Consultas a la cátedra (27/10)
 
@@ -163,7 +162,7 @@ en cuenta desde el diseño: las colecciones que necesitan sus estadísticas (`in
 - [x] Base `potrero-libre` en el cluster de Atlas y `MONGO_URI` en el `.env` (que no se sube)
 - [x] Cuenta de Cloudinary creada
 - [ ] Las tres claves de Cloudinary en el `.env` → **pasa al Sprint 1** (el tema se vio el 27/10)
-- [ ] Proyecto en **Vercel** (antes Firebase Hosting) → **pasa al final del Sprint 1**, con algo para mostrar
+- [x] Proyecto en **Vercel** (antes Firebase Hosting) → hecho al final del Sprint 1: front y back publicados
 - [x] Logo de "Potrero Libre"
 - [x] Identidad visual: paleta tomada del logo (ver la sección siguiente)
 - [x] Favicon propio: la marca "PL" sin el texto, en `identidad-visual/`
@@ -204,7 +203,7 @@ llevan el texto en `--fondo` (10:1).
 
 ---
 
-## Sprint 1 — Registro y login · 27/10 → 30/10 · se presenta el mar 03/11
+## Sprint 1 — Registro y login · 27/10 → 04/11 · se presenta el jue 05/11
 
 **Objetivo:** un usuario se registra con su foto, inicia sesión y navega las cuatro pantallas.
 
@@ -225,7 +224,7 @@ llevan el texto en `--fondo` (10:1).
   - [x] Credenciales incorrectas → **401** (mismo mensaje para correo y contraseña)
   - [x] Respuesta **200** con todos los datos del usuario (sin contraseña) y el token
 - [x] `JwtModule` en `AppModule` (`global: true`), con el secreto leído del `.env`; el token dura 15 minutos
-- [ ] Recomendado: primer deploy del back en **Vercel**
+- [x] Primer deploy del back en **Vercel**: `https://potrero-libre-back.vercel.app` (04/11)
 
 ### Front
 - [x] Pantallas: **Registro**, **Login**, **Publicaciones** y **Mi Perfil** (las dos últimas,
@@ -237,7 +236,7 @@ llevan el texto en `--fondo` (10:1).
 - [x] Validador propio de contraseña y validación cruzada de "repetir contraseña"
 - [x] Favicon propio (`favicon.ico` de `identidad-visual/`) y paleta como tokens en `:root`
 - [x] Los errores del servidor se muestran en la pantalla (nunca con `alert()`)
-- [ ] Al cierre del sprint: proyecto en **Vercel** y deploy (`vercel.json` ya está en `frontend/`)
+- [x] Deploy del front en **Vercel**: `https://potrero-libre.vercel.app` (04/11), conectado al back publicado
 
 **El código completo del Sprint 1** está en `backend/` y `frontend/`, dentro de esta misma
 carpeta, para copiarlo al repo del TP.
@@ -257,6 +256,9 @@ ejemplos de clase:
 | Front | `(change)` en el campo file y `input.files` | El campo file no funciona con `formControlName` |
 | Front | Validador a nivel formulario (`{ validators: passwordsIguales }`) | La validación cruzada compara dos campos |
 | Front | `markAllAsTouched()` | Muestra todos los mensajes al tocar "Ingresar" o "Crear cuenta" con el formulario incompleto |
+| Back (deploy) | `void bootstrap();` al final del `main.ts` (en vez de `await bootstrap();`) | Vercel atrapa `app.listen()` y no lo termina: con `await`, el `main.ts` nunca termina de cargar y el back cae al minuto (`INTERNAL_FUNCTION_INVOCATION_FAILED`). Es lo mismo que el ejemplo de Cloudinary del profe |
+| Back (deploy) | `MongooseModule.forRoot(uri, { lazyConnection: true })` | Vercel espera solo 1 segundo a que se llame a `app.listen()`; así Nest no espera a Atlas para arrancar y se conecta en segundo plano |
+| Front (deploy) | `API_URL` según `window.location.hostname` | En la compu usa el back local; publicado, el de Vercel |
 
 ### Para decidir más adelante
 
@@ -276,7 +278,7 @@ Cloudinary y la contraseña encriptada en Atlas, e iniciar sesión con esa cuent
 
 ---
 
-## Sprint 2 — Publicaciones y me gusta · 30/10 → 05/11 · se presenta el jue 05/11
+## Sprint 2 — Publicaciones y me gusta · 30/10 → 05/11 · se presenta el jue 05/11 (junto con el 1)
 
 **Objetivo:** publicar, listar, ordenar, paginar y dar me gusta.
 
@@ -344,7 +346,7 @@ me gusta se rechaza, y el orden "por me gusta" cambia.
 
 ---
 
-## Sprint 3 — Comentarios y sesión · 06/11 → 10/11 · se presenta el mar 10/11
+## Sprint 3 — Comentarios y sesión · 06/11 → 12/11 · se presenta el jue 12/11
 
 **Objetivo:** comentar, y una sesión de 15 minutos que avisa antes de vencer.
 
@@ -374,13 +376,13 @@ usando la app sin volver a iniciar sesión.
 
 ---
 
-## Sprint 4 — Administrador y estadísticas · 11/11 → 17/11 · se presenta el mar 17/11
+## Sprint 4 — Administrador y estadísticas · 13/11 → 17/11 · se presenta el mar 17/11
 
 **Objetivo:** el panel del administrador y cerrar los requisitos de la aplicación.
 
-**Orden sugerido:** el back primero (usuarios, guard de roles y estadísticas), para mostrarlo
-como avance en la clase del **jue 12/11**; después, el front del dashboard, la PWA, los pipes
-y las directivas, que ya se hicieron en el TP-1.
+**Orden sugerido:** como el Sprint 4 tiene solo 5 días, el back (usuarios, guard de roles y
+estadísticas) conviene empezarlo durante el Sprint 3, si sobra tiempo. Después, el front del
+dashboard, la PWA, los pipes y las directivas, que ya se hicieron en el TP-1.
 
 ### Back
 - [ ] **Guard de roles**: solo `administrador`
@@ -441,7 +443,7 @@ ve el motivo; los tres gráficos cambian al mover el rango de fechas.
 | Riesgo | Qué se hace |
 |---|---|
 | Subir credenciales a un repo público (pasó el 31/10 con el `.env.example`) | El `.env.example` va siempre **sin valores**; los valores solo en el `.env`, que no se sube. Una clave que se subió se cambia en el servicio, porque queda en el historial |
-| El Sprint 4 es el más cargado | Tiene el tramo más largo (7 días) y un avance a mitad de camino el 12/11. Con la reprogramación, el colchón quedó en un día: adelantar el Sprint 2 es la forma de recuperarlo |
+| El Sprint 4 es el más cargado y tiene solo 5 días (13/11 → 17/11) | Empezar su back durante el Sprint 3, que tiene 7 días con el feriado. El colchón es un solo día (18/11) |
 | Los Sprints 1 y 3 tienen tramos cortos (2 o 3 días) | El 1 arranca con todo creado en el Sprint 0; el 3 reutiliza la sesión del TP-1 (`provideAppInitializer`, guards) |
 | En el plan gratuito de Vercel, la primera petición después de un rato puede tardar (el back arranca "en frío") | Avisarlo en la defensa y abrir la app unos minutos antes |
 | Subir imágenes en `multipart` es nuevo | Cloudinary y los interceptores se vieron el 27/10: se sigue el ejemplo del profe apenas esté en Programacion-IV |
