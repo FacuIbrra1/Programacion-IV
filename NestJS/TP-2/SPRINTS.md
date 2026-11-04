@@ -225,7 +225,7 @@ llevan el texto en `--fondo` (10:1).
   - [x] Credenciales incorrectas → **401** (mismo mensaje para correo y contraseña)
   - [x] Respuesta **200** con todos los datos del usuario (sin contraseña) y el token
 - [x] `JwtModule` en `AppModule` (`global: true`), con el secreto leído del `.env`; el token dura 15 minutos
-- [ ] Recomendado: primer deploy del back en **Vercel**
+- [x] Primer deploy del back en **Vercel**: `https://potrero-libre-back.vercel.app` (04/11)
 
 ### Front
 - [x] Pantallas: **Registro**, **Login**, **Publicaciones** y **Mi Perfil** (las dos últimas,
@@ -257,6 +257,9 @@ ejemplos de clase:
 | Front | `(change)` en el campo file y `input.files` | El campo file no funciona con `formControlName` |
 | Front | Validador a nivel formulario (`{ validators: passwordsIguales }`) | La validación cruzada compara dos campos |
 | Front | `markAllAsTouched()` | Muestra todos los mensajes al tocar "Ingresar" o "Crear cuenta" con el formulario incompleto |
+| Back (deploy) | `void bootstrap();` al final del `main.ts` (en vez de `await bootstrap();`) | Vercel atrapa `app.listen()` y no lo termina: con `await`, el `main.ts` nunca termina de cargar y el back cae al minuto (`INTERNAL_FUNCTION_INVOCATION_FAILED`). Es lo mismo que el ejemplo de Cloudinary del profe |
+| Back (deploy) | `MongooseModule.forRoot(uri, { lazyConnection: true })` | Vercel espera solo 1 segundo a que se llame a `app.listen()`; así Nest no espera a Atlas para arrancar y se conecta en segundo plano |
+| Front (deploy) | `API_URL` según `window.location.hostname` | En la compu usa el back local; publicado, el de Vercel |
 
 ### Para decidir más adelante
 
