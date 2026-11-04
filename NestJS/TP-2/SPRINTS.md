@@ -3,7 +3,7 @@
 **Trabajo Práctico Nº 2 — Programación IV — Red social**
 **Autor:** Facundo Ibarra
 **Idea:** red social de fútbol amateur. Jugadores sin club, directores técnicos y clubes
-(administrados por su delegado) se encuentran, publican y se siguen.
+(con su propio perfil de institución) se encuentran, publican y se siguen.
 
 **Stack:** Angular 22 (front) · NestJS 12 (back) · MongoDB Atlas · JWT · Cloudinary · deploy en Vercel.
 
@@ -105,13 +105,12 @@ back del administrador) y dejar el 18/11 para pruebas y la defensa.
 |---|---|---|---|
 | 1 | El enunciado dice **"2026 C1"**: ¿es la versión vigente? | Sí | ✅ Confirmado |
 | 2 | ¿El 19/11 se entregan los **Sprints 1 a 4**? | Sí, hasta el Sprint 4 | ✅ Confirmado |
-| 3 | ¿La **cuenta de un club la maneja su delegado**, con el registro de una persona? | Se toma como válido por ahora | ⏳ Por definirse |
+| 3 | ¿La **cuenta de un club la maneja su delegado**, con el registro de una persona? | Se cambió el 04/11: la cuenta es el perfil de la institución (ver decisión 2) | ✅ Decidido · contárselo al profe |
 | 4 | Mi Perfil (Sprint 2) muestra comentarios cuyo controller es del **Sprint 3**: ¿se aceptan recién en el 3? | Sin respuesta todavía | ⏳ Por definirse |
 | 5 | ¿Alcanza con el token en la respuesta y en el header, sin cookies? | Las cookies no son obligatorias | ⏳ Por definirse |
 
-Mientras estén "por definirse", se sigue con lo planificado: cuenta de club a cargo del
-delegado, token en el header, y el modelo de comentarios creado en el Sprint 2 para poder
-mostrarlos en Mi Perfil apenas existan.
+Mientras estén "por definirse", se sigue con lo planificado: token en el header, y el modelo
+de comentarios creado en el Sprint 2 para poder mostrarlos en Mi Perfil apenas existan.
 
 Los **Sprints 5 (recuperatorio) y 6 (final)** quedan fuera de esta entrega (confirmado por la
 cátedra: el 19/11 se entrega hasta el Sprint 4). Igual se tienen
@@ -125,7 +124,7 @@ en cuenta desde el diseño: las colecciones que necesitan sus estadísticas (`in
 | # | Decisión | Por qué |
 |---|---|---|
 | 1 | Dos atributos distintos: **`perfil`** (`usuario` \| `administrador`) y **`tipo`** (`jugador` \| `dt` \| `club`) | El enunciado usa "perfil" para el rol; el tipo de cuenta futbolero es otra cosa |
-| 2 | **La cuenta de un club la maneja su delegado** ⏳ *por definirse con la cátedra* | El registro del TP pide nombre, apellido y fecha de nacimiento: son los del delegado. Los datos del club van en el perfil |
+| 2 | **Una cuenta Club es el perfil de la institución** (04/11): la maneja quien sea, como la cuenta de Instagram de un club. En el registro pide *nombre de la institución* (se guarda en `nombre`, sin apellido) y *fecha de creación* (se guarda en `fechaNacimiento`) | Con la cuenta a cargo de un delegado, el perfil mostraba a una persona en lugar del club. ⚠️ El enunciado pide apellido y fecha de nacimiento en el registro: se cumple para jugador y DT; para el club, contárselo al profe como decisión de diseño |
 | 3 | Token en el header **`Authorization: Bearer`** + interceptor en Angular ⏳ *por definirse con la cátedra* | Front y back en dominios distintos: una cookie sería de terceros y los navegadores la bloquean |
 | 4 | **JWT desde el Sprint 1**, aunque el enunciado lo pida en el 3 | En el Sprint 2 hay que saber quién da me gusta y quién borra |
 | 5 | Imágenes en **Cloudinary** | Se vio en clase el 27/10, y el back en Vercel no tiene un disco propio donde guardar archivos |
