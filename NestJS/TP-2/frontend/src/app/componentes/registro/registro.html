@@ -31,6 +31,7 @@
         }
       </fieldset>
 
+    <div class="grilla">
       <!-- Para un club, un solo campo a lo ancho: el nombre de la institución. -->
         <div class="campo" [class.campo-ancho]="esClub()">
           <label for="nombre">{{ esClub() ? 'Nombre de la institución' : 'Nombre' }}</label>
@@ -177,7 +178,7 @@
             <p class="ayuda">JPG, PNG o WEBP, hasta 2 MB.</p>
           }
         </div>
-      <!-- </div> -->
+      </div>
 
       <div class="campo">
         <label for="descripcion">Descripción breve <span class="ayuda">(opcional)</span></label>

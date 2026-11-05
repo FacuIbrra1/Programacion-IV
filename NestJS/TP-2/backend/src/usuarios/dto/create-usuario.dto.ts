@@ -11,9 +11,10 @@ export class CreateUsuarioDto {
   @IsNotEmpty({ message: 'El nombre es obligatorio' })
   nombre: string;
 
+  // Opcional acá: un club no tiene apellido. Que sea obligatorio para jugador y DT lo controla AutenticacionService, porque depende del tipo de cuenta.
+  @IsOptional()
   @IsString({ message: 'El apellido tiene que ser un texto' })
-  @IsNotEmpty({ message: 'El apellido es obligatorio' })
-  apellido: string;
+  apellido?: string;
 
   @IsEmail({}, { message: 'El correo no tiene un formato válido' })
   email: string;
