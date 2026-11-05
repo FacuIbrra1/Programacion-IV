@@ -46,6 +46,14 @@ export class AutenticacionService {
       throw new ConflictException('Ese nombre de usuario ya está en uso');
     }
 
+    // El apellido depende del tipo de cuenta: un club no tiene (si llegó uno, no se guarda), jugador y DT lo necesitan.
+    if (createUsuarioDto.tipo === 'club') {
+      createUsuarioDto.apellido = '';
+    } 
+    else if (!createUsuarioDto.apellido) {
+      throw new BadRequestException('El apellido es obligatorio');
+    }
+
     // Recién con todo validado se sube la imagen, para no dejar imágenes sueltas en Cloudinary.
     const imagenUrl = await this.cloudinaryService.subirImagen(
       imagen,

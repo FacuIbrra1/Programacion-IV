@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Publicacion } from './entities/publicacion.entity.js';
@@ -77,6 +77,31 @@ export class PublicacionesService {
       .skip(offset) // Se saltea las primeras "offset" (las de las páginas anteriores).
       .limit(limit) // Trae como máximo "limit".
       .populate('autor', DATOS_AUTOR);
+  }
+
+
+  // ---- BORRAR (baja lógica) ----
+  async borrar(id: Types.ObjectId, usuarioId: string, perfil: string) {
+    const publicacion = await this.publicacionModel.findById(id);
+
+    // 404: no existe, o ya estaba dada de baja (para el usuario es lo mismo: no está).
+    if (!publicacion || !publicacion.activa) {
+      throw new NotFoundException('La publicación no existe');
+    }
+
+    // 403: solo la puede borrar quien la publicó o un administrador.
+    // autor es un ObjectId y usuarioId es texto (viene del token): se comparan como texto.
+    const esAutor = publicacion.autor.toString() === usuarioId;
+    const esAdministrador = perfil === 'administrador';
+    if (!esAutor && !esAdministrador) {
+      throw new ForbiddenException('Solo podés borrar tus publicaciones');
+    }
+
+    // Baja lógica: queda en la base, pero el listado ya no la muestra.
+    publicacion.activa = false;
+    await publicacion.save();
+
+    return { message: 'Publicación eliminada' };
   }
     
 }

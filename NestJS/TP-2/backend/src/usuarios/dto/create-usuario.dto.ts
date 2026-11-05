@@ -1,14 +1,4 @@
-import {
-  IsDateString,
-  IsEmail,
-  IsIn,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  Matches,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
+import {IsDateString, IsEmail, IsIn, IsNotEmpty, IsOptional, IsString, Matches, MaxLength, MinLength} from 'class-validator';
 
 // Los datos del registro (POST /auth/registro).
 // Llega como multipart/form-data (por la imagen): TODOS los campos llegan como texto.
@@ -46,10 +36,11 @@ export class CreateUsuarioDto {
   })
   password: string;
 
+  // Para un club, es la fecha de creación.
   // strict: además del formato AAAA-MM-DD, controla que la fecha exista (rechaza 2001-02-30).
   @IsDateString(
     { strict: true },
-    { message: 'La fecha de nacimiento no es válida' },
+    { message: 'La fecha de nacimiento o de creación no es válida' },
   )
   fechaNacimiento: string;
 
