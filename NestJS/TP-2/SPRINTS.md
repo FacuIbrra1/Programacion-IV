@@ -80,24 +80,26 @@ profesor. Cada sprint termina el día de una clase, así se presenta apenas est�
 | **27/10** | martes | **Clase — presentación del Sprint 0** (idea, plan y decisiones) y consultas |
 | 27/10 → 04/11 | mar → mié | **Sprint 1** — registro, login y base de los dos proyectos ✅ terminado y publicado en Vercel |
 | 29/10 | jueves | Clase — interceptores en Angular y Nest (el Sprint 1 no llegó a presentarse) |
-| 30/10 → 05/11 | vie → jue | **Sprint 2** — publicaciones y me gusta |
+| 30/10 → 08/11 | vie → dom | **Sprint 2** — publicaciones y me gusta (el back quedó listo el 04/11; el front, del 06/11 al 08/11) |
 | 03/11 | martes | Sin clase |
-| **05/11** | jueves | **Clase — presentación de los Sprints 1 y 2** |
-| 06/11 → 12/11 | vie → jue | **Sprint 3** — comentarios y sesión con JWT de 15 minutos |
+| **05/11** | jueves | **Clase — presentación del Sprint 1** |
+| 09/11 → 12/11 | lun → jue | **Sprint 3** — comentarios y sesión con JWT de 15 minutos |
 | 10/11 | martes | Feriado: sin clase (día de trabajo) |
-| **12/11** | jueves | **Clase — presentación del Sprint 3** |
+| **12/11** | jueves | **Clase — presentación de los Sprints 2 y 3** |
 | 13/11 → 17/11 | vie → mar | **Sprint 4** — administrador, estadísticas, PWA, pipes y directivas |
 | **17/11** | martes | **Clase — presentación del Sprint 4 · Finalización** |
 | 18/11 | miércoles | Colchón: pruebas en la URL pública, README y preparación de la defensa |
 | **19/11** | jueves | **Clase — Entrega y defensa oral** |
 
-**Cronograma confirmado (04/11).** No hubo clase el 03/11 y el 10/11 es feriado, así que la
-cátedra fijó: Sprints 1 y 2 el 05/11, Sprint 3 el 12/11, Sprint 4 el 17/11, y entrega y defensa
-oral el 19/11.
+**Cronograma (actualizado el 04/11).** No hubo clase el 03/11 y el 10/11 es feriado. El 05/11 se
+presenta solo el Sprint 1, para llegar a repasarlo bien; los Sprints 2 y 3 se presentan juntos el
+12/11, el Sprint 4 el 17/11, y la entrega y la defensa oral son el 19/11.
 
-**Cómo quedan los tiempos:** el Sprint 3 tiene 7 días (incluye el feriado) y el Sprint 4, el más
-pesado, solo 5. Conviene adelantar en el Sprint 3 lo que se pueda del Sprint 4 (por ejemplo, el
-back del administrador) y dejar el 18/11 para pruebas y la defensa.
+**Cómo quedan los tiempos:** el Sprint 2 solo necesita el front, porque su back ya está. El
+Sprint 3 queda con 4 días (con el feriado), así que su back (comentarios, `autorizar` y refrescar
+el token) puede empezar apenas termine el front del Sprint 2. El Sprint 4, el más pesado, tiene
+5 días: conviene adelantar lo que se pueda (por ejemplo, el back del administrador) y dejar el
+18/11 para pruebas y la defensa.
 
 ### Consultas a la cátedra (27/10)
 
@@ -277,7 +279,7 @@ Cloudinary y la contraseña encriptada en Atlas, e iniciar sesión con esa cuent
 
 ---
 
-## Sprint 2 — Publicaciones y me gusta · 30/10 → 05/11 · se presenta el jue 05/11 (junto con el 1)
+## Sprint 2 — Publicaciones y me gusta · 30/10 → 08/11 · se presenta el jue 12/11 (junto con el 3)
 
 **Objetivo:** publicar, listar, ordenar, paginar y dar me gusta.
 
@@ -345,7 +347,7 @@ me gusta se rechaza, y el orden "por me gusta" cambia.
 
 ---
 
-## Sprint 3 — Comentarios y sesión · 06/11 → 12/11 · se presenta el jue 12/11
+## Sprint 3 — Comentarios y sesión · 09/11 → 12/11 · se presenta el jue 12/11 (junto con el 2)
 
 **Objetivo:** comentar, y una sesión de 15 minutos que avisa antes de vencer.
 
