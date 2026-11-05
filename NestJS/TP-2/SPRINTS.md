@@ -313,19 +313,19 @@ Cloudinary y la contraseña encriptada en Atlas, e iniciar sesión con esa cuent
 | 9 | `collection: 'publicaciones'` en el `@Schema` | Que la colección se llame "publicaciones" y no "publicacions" (Mongoose agrega una "s" al nombre del modelo) | Es una opción del schema, como `toJSON` | ✅ Agregarla |
 
 ### Back
-- [ ] `AuthGuard` que lee el token del header y deja el usuario en `request.user`
-- [ ] **`POST /publicaciones`**: título, mensaje, categoría e imagen opcional (a Cloudinary),
+- [x] `AuthGuard` que lee el token del header y deja el usuario en `request.user`
+- [x] **`POST /publicaciones`**: título, mensaje, categoría e imagen opcional (a Cloudinary),
       relacionada con el usuario del token
-- [ ] **`GET /publicaciones`** con parámetros:
-  - [ ] `orden=fecha|likes` (por defecto, fecha)
-  - [ ] `usuario=<id>` para filtrar las de un usuario
-  - [ ] `offset` y `limit` para paginar
-  - [ ] `categoria` (extra de Potrero Libre)
-- [ ] **`DELETE /publicaciones/:id`**: baja lógica, solo el autor o un administrador (si no, **403**)
-- [ ] **`POST /publicaciones/:id/like`**: un solo me gusta por usuario (índice único → **409**)
+- [x] **`GET /publicaciones`** con parámetros:
+  - [x] `orden=fecha|likes` (por defecto, fecha)
+  - [x] `usuario=<id>` para filtrar las de un usuario
+  - [x] `offset` y `limit` para paginar
+  - [x] `categoria` (extra de Potrero Libre)
+- [x] **`DELETE /publicaciones/:id`**: baja lógica, solo el autor o un administrador (si no, **403**)
+- [ ] **`POST /publicaciones/:id/like`**: un solo me gusta por usuario (`findOne` antes de crear → **409**); suma con `$inc`
 - [ ] **`DELETE /publicaciones/:id/like`**: solo si lo había dado (si no, **404**)
-- [ ] Schema `Comentario` creado (Mi Perfil ya los muestra; los endpoints son del Sprint 3)
-- [ ] Back desplegado (a más tardar en este sprint)
+- [x] Schema `Comentario` creado (Mi Perfil ya los muestra; los endpoints son del Sprint 3)
+- [x] Back desplegado (a más tardar en este sprint)
 
 ### Front
 - [ ] Interceptor que agrega el token (`Authorization: Bearer`) a los pedidos que van al back (visto el 29/10)
