@@ -38,4 +38,16 @@ export class PublicacionesController {
     return this.publicacionesService.borrar(id, request.user.sub, request.user.perfil);
   }
 
+  // POST /publicaciones/:id/like → el usuario del token le da me gusta.
+  @Post(':id/like')
+  darLike(@Param('id', ParseObjectIdPipe) id: Types.ObjectId, @Req() request: any) {
+    return this.publicacionesService.darLike(id, request.user.sub);
+  }
+
+  // DELETE /publicaciones/:id/like → le quita el me gusta (solo si lo había dado).
+  @Delete(':id/like')
+  quitarLike(@Param('id', ParseObjectIdPipe) id: Types.ObjectId, @Req() request: any) {
+    return this.publicacionesService.quitarLike(id, request.user.sub);
+  }
+
 }

@@ -1,10 +1,11 @@
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Publicacion } from './entities/publicacion.entity.js';
 import { CreatePublicacionDto } from './dto/create-publicacion.dto.js';
 import { CloudinaryService } from '../cloudinary/cloudinary.service.js';
 import { ListarPublicacionesDto } from './dto/listar-publicaciones.dto.js';
+import { Like } from './entities/like.entity.js';
 
 // Los datos del autor que se muestran con cada publicación (nunca la contraseña ni el correo).
 const DATOS_AUTOR = 'nombre apellido username imagenUrl tipo';
@@ -16,6 +17,8 @@ export class PublicacionesService {
     @InjectModel(Publicacion.name)
     private readonly publicacionModel: Model<Publicacion>,
     private readonly cloudinaryService: CloudinaryService,
+    @InjectModel(Like.name)
+    private readonly likeModel: Model<Like>,
   ) {}
 
   // ---- CREAR ----
@@ -82,12 +85,7 @@ export class PublicacionesService {
 
   // ---- BORRAR (baja lógica) ----
   async borrar(id: Types.ObjectId, usuarioId: string, perfil: string) {
-    const publicacion = await this.publicacionModel.findById(id);
-
-    // 404: no existe, o ya estaba dada de baja (para el usuario es lo mismo: no está).
-    if (!publicacion || !publicacion.activa) {
-      throw new NotFoundException('La publicación no existe');
-    }
+    const publicacion = await this.buscarPublicacionActiva(id);
 
     // 403: solo la puede borrar quien la publicó o un administrador.
     // autor es un ObjectId y usuarioId es texto (viene del token): se comparan como texto.
@@ -102,6 +100,63 @@ export class PublicacionesService {
     await publicacion.save();
 
     return { message: 'Publicación eliminada' };
+  }
+
+
+  // ---- DAR ME GUSTA ----
+  async darLike(id: Types.ObjectId, usuarioId: string) {
+    await this.buscarPublicacionActiva(id);
+
+    // 409: un solo me gusta por usuario. Se revisa antes de crear, como el correo repetido del registro.
+    const likeExistente = await this.likeModel.findOne({ publicacion: id, usuario: usuarioId });
+    if (likeExistente) {
+      throw new ConflictException('Ya le diste me gusta a esta publicación');
+    }
+
+    await this.likeModel.create({ publicacion: id, usuario: usuarioId });
+
+    // $inc suma 1 directo en la base: no hace falta leer el número, sumarlo y guardarlo.
+    const publicacion = await this.publicacionModel.findByIdAndUpdate(
+      id,
+      { $inc: { cantidadLikes: 1 } },
+      { returnDocument: 'after' }, // Devuelve la publicación ya actualizada (como en el ejercicio-1).
+    );
+
+    return { message: 'Me gusta agregado', cantidadLikes: publicacion?.cantidadLikes };
+  }
+
+
+  // ---- QUITAR ME GUSTA ----
+  async quitarLike(id: Types.ObjectId, usuarioId: string) {
+    await this.buscarPublicacionActiva(id);
+
+    // 404: solo se puede quitar un me gusta que el usuario había dado.
+    const like = await this.likeModel.findOne({ publicacion: id, usuario: usuarioId });
+    if (!like) {
+      throw new NotFoundException('No le habías dado me gusta a esta publicación');
+    }
+
+    await this.likeModel.findByIdAndDelete(like._id);
+
+    // $inc con -1: resta uno.
+    const publicacion = await this.publicacionModel.findByIdAndUpdate(
+      id,
+      { $inc: { cantidadLikes: -1 } },
+      { returnDocument: 'after' },
+    );
+
+    return { message: 'Me gusta quitado', cantidadLikes: publicacion?.cantidadLikes };
+  }
+
+
+  // Borrar, dar y quitar me gusta empiezan igual: la publicación tiene que existir y estar activa.
+  // 404: no existe, o ya estaba dada de baja (para el usuario es lo mismo: no está).
+  private async buscarPublicacionActiva(id: Types.ObjectId) {
+    const publicacion = await this.publicacionModel.findById(id);
+    if (!publicacion || !publicacion.activa) {
+      throw new NotFoundException('La publicación no existe');
+    }
+    return publicacion;
   }
     
 }
