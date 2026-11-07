@@ -38,3 +38,14 @@ h1 {
   max-width: 420px;
   margin: 10px auto 20px;
 }
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.estado {
+  text-align: center;
+  padding: 32px 0;
+}
