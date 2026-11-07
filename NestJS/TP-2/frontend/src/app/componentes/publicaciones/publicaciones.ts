@@ -7,12 +7,13 @@ import { Publicacion } from '../../models/publicacion';
 import { TarjetaPublicacion } from '../tarjeta-publicacion/tarjeta-publicacion';
 import { ModalConfirmacion } from '../modal-confirmacion/modal-confirmacion';
 import { mensajesDeError } from '../../api';
+import { FormularioPublicacion } from '../formulario-publicacion/formulario-publicacion';
 
 // Cuántas publicaciones se muestran por página.
 const POR_PAGINA = 5;
 
 @Component({
-  imports: [RouterLink, TarjetaPublicacion, ModalConfirmacion],
+  imports: [RouterLink, TarjetaPublicacion, ModalConfirmacion, FormularioPublicacion],
   selector: 'app-publicaciones',
   styleUrl: './publicaciones.css',
   templateUrl: './publicaciones.html',
@@ -46,6 +47,10 @@ export class Publicaciones implements OnInit {
   protected readonly publicacionABorrar = signal<Publicacion | null>(null);
   protected readonly borrando = signal(false);
   protected readonly errorAlBorrar = signal<string | null>(null);
+
+  // El formulario para publicar: se abre con el botón "+ Publicar".
+  protected readonly formularioAbierto = signal(false);
+  protected readonly avisoPublicada = signal(false);
 
   ngOnInit(): void {
     // Sin sesión no se pide nada: el back respondería 401 (los guards llegan en el Sprint 3).
@@ -84,6 +89,7 @@ export class Publicaciones implements OnInit {
     this.cargando.set(true);
     this.erroresServidor.set([]);
     this.erroresAccion.set([]);
+    this.avisoPublicada.set(false);
 
     this.publicacionesService
       .listar({
@@ -111,11 +117,35 @@ export class Publicaciones implements OnInit {
       });
   }
 
+
+  // ---- Publicar ----
+
+  protected abrirFormulario() {
+    this.formularioAbierto.set(true);
+  }
+
+  protected cerrarFormulario() {
+    this.formularioAbierto.set(false);
+  }
+
+  // Se cierra el formulario y se vuelve a las más nuevas, sin filtro: la nueva queda primera.
+  protected alPublicar() {
+    this.formularioAbierto.set(false);
+    this.orden.set('fecha');
+    this.categoria.set('');
+    this.pagina.set(0);
+    this.cargar();
+    this.avisoPublicada.set(true);
+  }
+
+
   // ---- Me gusta ----
 
   private cargarMisMeGusta() {
     this.publicacionesService.misLikes().subscribe({
       next: (ids) => this.idsMeGusta.set(ids),
+      // Si falla, los corazones quedan vacíos: el error ya lo muestra el listado.
+      error: () => this.idsMeGusta.set([]),
     });
   }
 

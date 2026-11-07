@@ -10,6 +10,9 @@
         <p class="ayuda">Lo último del potrero.</p>
       }
     </div>
+    @if (autenticacion.usuario() && !formularioAbierto()) {
+      <button class="boton" type="button" (click)="abrirFormulario()">+ Publicar</button>
+    }
   </header>
 
   @if (!autenticacion.usuario()) {
@@ -21,6 +24,9 @@
       <a class="boton" routerLink="/login">Ingresar</a>
     </div>
   } @else {
+    @if (formularioAbierto()) {
+      <app-formulario-publicacion (publicada)="alPublicar()" (cancelar)="cerrarFormulario()" />
+    }
     <div class="controles">
       <div class="opciones" role="group" aria-label="Ordenar">
         <button type="button" [class.activo]="orden() === 'fecha'" (click)="cambiarOrden('fecha')">
@@ -43,7 +49,9 @@
         }
       </div>
     </div>
-
+    @if (avisoPublicada()) {
+      <p class="aviso-ok" role="status">¡Listo! Tu publicación ya está en el listado.</p>
+    }
     @if (erroresAccion().length > 0) {
       <div class="errores-servidor" role="alert">
         <ul>
