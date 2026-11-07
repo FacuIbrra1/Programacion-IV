@@ -6,6 +6,8 @@ import {Publicacion, PublicacionSchema} from './entities/publicacion.entity.js';
 import { Like, LikeSchema } from './entities/like.entity.js';
 import { Comentario, ComentarioSchema } from './entities/comentario.entity.js';
 import { CloudinaryModule } from '../cloudinary/cloudinary.module.js';
+import { ComentariosController } from './comentarios.controller.js';
+import { ComentariosService } from './comentarios.service.js';
 
 @Module({
   imports: [
@@ -16,8 +18,8 @@ import { CloudinaryModule } from '../cloudinary/cloudinary.module.js';
     ]),
     CloudinaryModule, // Para subir la imagen opcional de cada publicación.
   ],
-  controllers: [PublicacionesController],
-  providers: [PublicacionesService]
+  controllers: [PublicacionesController, ComentariosController],
+  providers: [PublicacionesService, ComentariosService]
 })
 
 export class PublicacionesModule {}

@@ -19,13 +19,21 @@
   }
 
   <footer class="acciones">
-    <button type="button" class="me-gusta" [class.activo]="meGusta()" (click)="alTocarMeGusta()">
-      <span aria-hidden="true">{{ meGusta() ? '♥' : '♡' }}</span>
-      {{ publicacion().cantidadLikes }} Me gusta
-    </button>
+    @if (acciones()) {
+      <button type="button" class="me-gusta" [class.activo]="meGusta()" (click)="alTocarMeGusta()">
+        <span aria-hidden="true">{{ meGusta() ? '♥' : '♡' }}</span>
+        {{ publicacion().cantidadLikes }} Me gusta
+      </button>
 
-    @if (puedeBorrar()) {
-      <button type="button" class="borrar" (click)="borrar.emit()">Borrar</button>
+      @if (puedeBorrar()) {
+        <button type="button" class="borrar" (click)="borrar.emit()">Borrar</button>
+      }
+    } @else {
+      <span class="total-me-gusta">♥ {{ publicacion().cantidadLikes }} Me gusta</span>
     }
   </footer>
+
+  @if (mostrarComentarios()) {
+    <app-lista-comentarios [publicacionId]="publicacion()._id" />
+  }
 </article>

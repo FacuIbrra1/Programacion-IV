@@ -92,3 +92,8 @@ h2 {
 .me-gusta:hover {
   color: var(--verde);
 }
+
+.total-me-gusta {
+  color: var(--texto-suave);
+  font-weight: 600;
+}

@@ -2,12 +2,13 @@ import { Component, inject, input, output } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Publicacion } from '../../models/publicacion';
 import { Autenticacion } from '../../servicios/autenticacion';
+import { ListaComentarios } from '../lista-comentarios/lista-comentarios';
 
 // Cada publicación es un componente (lo pide el enunciado).
 // Recibe la publicación con input() y avisa al padre con output(), como el Hijo del ejemplo de clase:
 // la tarjeta no llama al back, de eso se encarga la página que la muestra.
 @Component({
-  imports: [DatePipe],
+  imports: [DatePipe, ListaComentarios],
   selector: 'app-tarjeta-publicacion',
   styleUrl: './tarjeta-publicacion.css',
   templateUrl: './tarjeta-publicacion.html',
@@ -17,6 +18,8 @@ export class TarjetaPublicacion {
 
   publicacion = input.required<Publicacion>();
   meGusta = input(false); // Si el usuario de la sesión ya le dio me gusta.
+  acciones = input(true); // false: sin botones, solo la cantidad de me gusta (Mi Perfil).
+  mostrarComentarios = input(false); // true: muestra los comentarios debajo (Mi Perfil).
 
   darMeGusta = output<void>();
   quitarMeGusta = output<void>();

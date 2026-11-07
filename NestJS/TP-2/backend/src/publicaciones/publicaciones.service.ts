@@ -8,7 +8,7 @@ import { ListarPublicacionesDto } from './dto/listar-publicaciones.dto.js';
 import { Like } from './entities/like.entity.js';
 
 // Los datos del autor que se muestran con cada publicación (nunca la contraseña ni el correo).
-const DATOS_AUTOR = 'nombre apellido username imagenUrl tipo';
+export const DATOS_AUTOR = 'nombre apellido username imagenUrl tipo';
 
 // Sprint 2: acá va la lógica de las publicaciones.
 @Injectable()
@@ -151,7 +151,8 @@ export class PublicacionesService {
 
   // Borrar, dar y quitar me gusta empiezan igual: la publicación tiene que existir y estar activa.
   // 404: no existe, o ya estaba dada de baja (para el usuario es lo mismo: no está).
-  private async buscarPublicacionActiva(id: Types.ObjectId) {
+  // Sin private: también lo usa ComentariosService.
+  async buscarPublicacionActiva(id: Types.ObjectId) {
     const publicacion = await this.publicacionModel.findById(id);
     if (!publicacion || !publicacion.activa) {
       throw new NotFoundException('La publicación no existe');
