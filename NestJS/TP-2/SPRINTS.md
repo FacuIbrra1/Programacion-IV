@@ -324,8 +324,8 @@ Cloudinary y la contraseña encriptada en Atlas, e iniciar sesión con esa cuent
   - [x] `offset` y `limit` para paginar
   - [x] `categoria` (extra de Potrero Libre)
 - [x] **`DELETE /publicaciones/:id`**: baja lógica, solo el autor o un administrador (si no, **403**)
-- [ ] **`POST /publicaciones/:id/like`**: un solo me gusta por usuario (`findOne` antes de crear → **409**); suma con `$inc`
-- [ ] **`DELETE /publicaciones/:id/like`**: solo si lo había dado (si no, **404**)
+- [x] **`POST /publicaciones/:id/like`**: un solo me gusta por usuario (`findOne` antes de crear → **409**); suma con `$inc`
+- [x] **`DELETE /publicaciones/:id/like`**: solo si lo había dado (si no, **404**)
 - [x] Schema `Comentario` creado (Mi Perfil ya los muestra; los endpoints son del Sprint 3)
 - [x] Back desplegado (a más tardar en este sprint)
 
