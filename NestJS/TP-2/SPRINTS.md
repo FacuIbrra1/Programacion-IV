@@ -295,10 +295,10 @@ Cloudinary y la contraseña encriptada en Atlas, e iniciar sesión con esa cuent
 | 5 | `DELETE /publicaciones/:id` (baja lógica, 403) | Back |
 | 6 | `POST` y `DELETE /publicaciones/:id/like` (409 y 404) | Back |
 | 7 | Sesión en `localStorage` e interceptores (token y reintento) | Front |
-| 8 | Servicio de publicaciones y componente `Publicacion` | Front |
-| 9 | Página de publicaciones: listado, orden, paginado, filtro, me gusta y borrar con modal | Front |
+| 8 | Servicio de publicaciones y componente `TarjetaPublicacion` (`Publicacion` ya es el nombre del modelo) | Front |
+| 9 | Página de publicaciones: listado, orden, paginado, filtro, me gusta y borrar con modal + `GET /publicaciones/mis-likes` | Front y back |
 | 10 | Formulario para publicar | Front |
-| 11 | Mi Perfil: datos, foto y últimas 3 publicaciones con sus comentarios | Front |
+| 11 | Mi Perfil: datos, foto y últimas 3 publicaciones con sus comentarios + `GET /publicaciones/:id/comentarios` (adelantado del Sprint 3) | Front y back |
 
 ### Conceptos no vistos que pide el Sprint 2 (decididos el 01/11)
 
@@ -313,6 +313,8 @@ Cloudinary y la contraseña encriptada en Atlas, e iniciar sesión con esa cuent
 | 7 | Sesión en `localStorage` desde ahora (en el plan era del Sprint 3) | Que el token no se pierda al recargar | `localStorage` se vio en el ejemplo de guards (`Ej-clase-5`) | ✅ Sí, desde ahora |
 | 8 | Interceptores de Angular | Token en el header y reintento de los `GET` | Vistos el 29/10, pero falta el ejemplo del profe | ✅ Sí, lo más sencillo posible |
 | 9 | `collection: 'publicaciones'` en el `@Schema` | Que la colección se llame "publicaciones" y no "publicacions" (Mongoose agrega una "s" al nombre del modelo) | Es una opción del schema, como `toJSON` | ✅ Agregarla |
+| 10 | Saber a qué publicaciones ya les di me gusta | Mostrar el ♥ y elegir entre dar o quitar ("siempre que sea el caso") | **A:** `GET /publicaciones/mis-likes` con `find` + `select` (visto) · **B:** un campo `meGusta` en cada publicación del listado (hay que convertir los documentos de Mongoose: no visto) · **C:** recordarlo solo en el front (se pierde al recargar) | ✅ A (07/11) |
+| 11 | Comentarios con los datos de quien comentó (Mi Perfil) | Mostrar nombre, @usuario y foto de cada comentario | **A:** `GET /publicaciones/:id/comentarios` con `populate('autor', ...)`, adelantado del Sprint 3 (visto) · **B:** populate anidado sobre el virtual `comentarios` de la publicación (no visto) | ✅ A (07/11) |
 
 ### Back
 - [x] `AuthGuard` que lee el token del header y deja el usuario en `request.user`
@@ -326,24 +328,26 @@ Cloudinary y la contraseña encriptada en Atlas, e iniciar sesión con esa cuent
 - [x] **`DELETE /publicaciones/:id`**: baja lógica, solo el autor o un administrador (si no, **403**)
 - [x] **`POST /publicaciones/:id/like`**: un solo me gusta por usuario (`findOne` antes de crear → **409**); suma con `$inc`
 - [x] **`DELETE /publicaciones/:id/like`**: solo si lo había dado (si no, **404**)
-- [x] Schema `Comentario` creado (Mi Perfil ya los muestra; los endpoints son del Sprint 3)
+- [x] **`GET /publicaciones/mis-likes`**: los ids de las publicaciones a las que les di me gusta (para el ♥ del front)
+- [x] Schema `Comentario` + `ComentariosController` con **`GET /publicaciones/:id/comentarios`** (Mi Perfil los muestra; el POST y el PUT son del Sprint 3)
 - [x] Back desplegado (a más tardar en este sprint)
 
 ### Front
-- [ ] Interceptor que agrega el token (`Authorization: Bearer`) a los pedidos que van al back (visto el 29/10)
-- [ ] Interceptor que reintenta los `GET` fallidos con retroceso exponencial, pocas veces (visto el 29/10)
-- [ ] Página de publicaciones: listado ordenado por fecha, cambio a "por me gusta", paginación
-- [ ] **Cada publicación es un componente**
-- [ ] Dar y quitar me gusta; borrar las publicaciones propias (con modal de confirmación)
-- [ ] Formulario para crear una publicación
-- [ ] **Mi Perfil:** todos los datos del usuario, su foto y sus últimas 3 publicaciones con sus comentarios
+- [x] Sesión guardada en `localStorage` (no se pierde al recargar)
+- [x] Interceptor que agrega el token (`Authorization: Bearer`) a los pedidos que van al back (visto el 29/10)
+- [x] Interceptor que reintenta los `GET` fallidos con retroceso exponencial, pocas veces (visto el 29/10): 3 reintentos (1 s, 2 s y 4 s), nunca los 4xx
+- [x] Página de publicaciones: listado ordenado por fecha, cambio a "por me gusta", paginación (5 por página)
+- [x] **Cada publicación es un componente** (`TarjetaPublicacion`)
+- [x] Dar y quitar me gusta; borrar las publicaciones propias (con modal de confirmación: `ModalConfirmacion`)
+- [x] Formulario para crear una publicación (`FormularioPublicacion`)
+- [x] **Mi Perfil:** todos los datos del usuario, su foto y sus últimas 3 publicaciones con sus comentarios
 
 ### Potrero Libre
-- [ ] Categorías: **General**, **Busco club**, **Busco jugadores**, **Prueba** (convocatoria)
-- [ ] Filtro por categoría en el listado
+- [x] Categorías: **General**, **Busco club**, **Busco jugadores**, **Prueba** (convocatoria)
+- [x] Filtro por categoría en el listado
 
 **Definición de hecho:** dos usuarios publican; uno le da me gusta a la del otro, un segundo
-me gusta se rechaza, y el orden "por me gusta" cambia.
+me gusta se rechaza, y el orden "por me gusta" cambia. ✅ **Cumplida** (07/11, en el laboratorio).
 
 ---
 
@@ -353,6 +357,9 @@ me gusta se rechaza, y el orden "por me gusta" cambia.
 
 ### Back
 - [ ] **`GET /publicaciones/:id/comentarios`**: paginado, los más recientes primero
+      (adelantado en el Paso 11 del Sprint 2: ya ordena y trae el autor; falta paginar con `offset` y `limit`)
+- [ ] **`GET /publicaciones/:id`** para la página de una publicación (ojo: declararlo **después** de `@Get('mis-likes')`,
+      si no Nest toma "mis-likes" como un id)
 - [ ] **`POST /publicaciones/:id/comentarios`**: con el usuario del token y la fecha
 - [ ] **`PUT /comentarios/:id`**: solo el autor; marca `modificado: true`
 - [ ] Token con id, username y perfil; **vence a los 15 minutos**
