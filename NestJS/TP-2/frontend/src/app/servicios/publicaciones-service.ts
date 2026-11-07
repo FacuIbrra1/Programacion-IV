@@ -21,6 +21,11 @@ export class PublicacionesService {
     return this.httpClient.get<Publicacion[]>(url);
   }
 
+  // Los ids de las publicaciones a las que el usuario de la sesión les dio me gusta.
+  misLikes(): Observable<string[]> {
+    return this.httpClient.get<string[]>(`${API_URL}/publicaciones/mis-likes`);
+  }
+
   // multipart/form-data: título, mensaje, categoría y la imagen (opcional) viajan juntos.
   crear(datos: FormData): Observable<Publicacion> {
     return this.httpClient.post<Publicacion>(`${API_URL}/publicaciones`, datos);

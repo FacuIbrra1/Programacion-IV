@@ -50,4 +50,11 @@ export class PublicacionesController {
     return this.publicacionesService.quitarLike(id, request.user.sub);
   }
 
+  // GET /publicaciones/mis-likes -> los ids de las publicaciones a las que el usuario del token les dio me gusta.
+  // Va antes de cualquier @Get(':id'): si no, Nest tomaría "mis-likes" como si fuera un id.
+  @Get('mis-likes')
+  misLikes(@Req() request: any) {
+    return this.publicacionesService.misLikes(request.user.sub);
+  }
+
 }

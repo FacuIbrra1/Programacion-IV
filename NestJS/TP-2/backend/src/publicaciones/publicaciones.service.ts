@@ -158,5 +158,16 @@ export class PublicacionesService {
     }
     return publicacion;
   }
+
+
+  // ---- MIS ME GUSTA ----
+  // El front lo usa para saber en qué publicaciones mostrar el me gusta ya dado.
+  async misLikes(usuarioId: string) {
+    // Solo el campo publicacion, como el .select('-password') pero al revés: se elige qué traer.
+    const likes = await this.likeModel.find({ usuario: usuarioId }).select('publicacion');
+
+    // De [{ _id, publicacion }, ...] a una lista de ids: ['...', '...'].
+    return likes.map((like) => like.publicacion);
+  }
     
 }
