@@ -84,16 +84,16 @@ profesor. Cada sprint termina el día de una clase, así se presenta apenas est�
 | 03/11 | martes | Sin clase |
 | **05/11** | jueves | **Clase — presentación del Sprint 1** |
 | 09/11 → 12/11 | lun → jue | **Sprint 3** — comentarios y sesión con JWT de 15 minutos |
-| 10/11 | martes | Feriado: sin clase (día de trabajo) |
-| **12/11** | jueves | **Clase — presentación de los Sprints 2 y 3** |
+| **10/11** | martes | **Clase — presentación del Sprint 2** (al final hubo clase) ✅ presentado, con 3 correcciones |
+| **12/11** | jueves | **Clase — presentación del Sprint 3** |
 | 13/11 → 17/11 | vie → mar | **Sprint 4** — administrador, estadísticas, PWA, pipes y directivas |
 | **17/11** | martes | **Clase — presentación del Sprint 4 · Finalización** |
 | 18/11 | miércoles | Colchón: pruebas en la URL pública, README y preparación de la defensa |
 | **19/11** | jueves | **Clase — Entrega y defensa oral** |
 
-**Cronograma (actualizado el 04/11).** No hubo clase el 03/11 y el 10/11 es feriado. El 05/11 se
-presenta solo el Sprint 1, para llegar a repasarlo bien; los Sprints 2 y 3 se presentan juntos el
-12/11, el Sprint 4 el 17/11, y la entrega y la defensa oral son el 19/11.
+**Cronograma (actualizado el 11/11).** No hubo clase el 03/11. El 05/11 se presentó el Sprint 1.
+El 10/11 al final hubo clase y se presentó el Sprint 2; el Sprint 3 se presenta el 12/11, el
+Sprint 4 el 17/11, y la entrega y la defensa oral son el 19/11.
 
 **Cómo quedan los tiempos:** el Sprint 2 solo necesita el front, porque su back ya está. El
 Sprint 3 queda con 4 días (con el feriado), así que su back (comentarios, `autorizar` y refrescar
@@ -279,7 +279,7 @@ Cloudinary y la contraseña encriptada en Atlas, e iniciar sesión con esa cuent
 
 ---
 
-## Sprint 2 — Publicaciones y me gusta · 30/10 → 08/11 · se presenta el jue 12/11 (junto con el 3)
+## Sprint 2 — Publicaciones y me gusta · 30/10 → 08/11 · presentado el mar 10/11
 
 **Objetivo:** publicar, listar, ordenar, paginar y dar me gusta.
 
@@ -349,11 +349,41 @@ Cloudinary y la contraseña encriptada en Atlas, e iniciar sesión con esa cuent
 **Definición de hecho:** dos usuarios publican; uno le da me gusta a la del otro, un segundo
 me gusta se rechaza, y el orden "por me gusta" cambia. ✅ **Cumplida** (07/11, en el laboratorio).
 
+### Correcciones de la presentación (10/11)
+
+| # | Corrección | Cómo se resuelve | Estado |
+|---|---|---|---|
+| 1 | Iniciar sesión con el **nombre de usuario o el correo** | Back: `LoginDto` recibe `usuario` (antes `email`); el servicio busca primero con `buscarPorEmail` y, si no encuentra, con `buscarPorUsername` (los dos ya existían). Front: un solo campo "Correo o nombre de usuario" con el validador `validarUsuarioOCorreo` (si tiene @, se controla como correo, así sigue el aviso de "prueba@m") | ⏳ Probado en una copia; falta pasarlo |
+| 2 | **Acceso rápido** de administrador en el login | Botón "Ingresar como administrador" que llama al mismo login con la cuenta de prueba `administrador`. La cuenta se crea con el registro y después se le cambia `perfil` a `administrador` en Atlas (crear administradores desde la app es del Sprint 4) | ⏳ Probado en una copia; falta pasarlo |
+| 3 | Un título o un mensaje **sin espacios** se salía de la tarjeta | `overflow-wrap: anywhere` en `h1, h2, h3, p, dd` (`styles.css`): la palabra se corta donde haga falta. Cubre publicaciones, comentarios y Mi Perfil | ⏳ Probado en una copia; falta pasarlo |
+| 4 | Pregunta: ¿por qué `cargarMisMeGusta()` y `cargar()` están separados? | Son dos pedidos con ritmos distintos: los me gusta del usuario se piden una vez al entrar, y el listado cada vez que cambian el orden, la categoría o la página. Además, si falla uno, el otro se muestra igual | ✅ Respondida |
+
 ---
 
-## Sprint 3 — Comentarios y sesión · 09/11 → 12/11 · se presenta el jue 12/11 (junto con el 2)
+## Sprint 3 — Comentarios y sesión · 09/11 → 12/11 · se presenta el jue 12/11
 
 **Objetivo:** comentar, y una sesión de 15 minutos que avisa antes de vencer.
+
+### Pasos
+
+| Paso | Qué | Dónde |
+|---|---|---|
+| 1 | `GET /publicaciones/:id` y comentarios paginados (`offset` y `limit`) | Back · ⏳ probado en una copia (20/20 en Postman) |
+| 2 | `POST /publicaciones/:id/comentarios` y `PUT /comentarios/:id` (403 si no es el autor, `modificado: true`) | Back |
+| 3 | Página de una publicación: grande, con sus comentarios y "cargar más" | Front |
+| 4 | Escribir comentarios y editar los propios ("(editado)") | Front |
+| 5 | `POST /auth/autorizar` y `POST /auth/refrescar`, y anotar cada login en `ingresos` | Back |
+| 6 | Guards de sesión y 401 → login | Front |
+| 7 | Pantalla de cargando con spinner, que valida el token con `autorizar` | Front |
+| 8 | Contador de 10 minutos y modal para extender la sesión (`refrescar`) | Front |
+
+### Conceptos no vistos que pide el Sprint 3 (⏳ por decidir)
+
+| # | Concepto | Para qué | Opciones |
+|---|---|---|---|
+| 1 | Pantalla de cargando | "Al iniciar la aplicación… validar el token contra autorizar" | **A (recomendada):** componente `Cargando` en la ruta inicial que llama a `autorizar` y navega con `router.navigate` (visto) · **B:** `provideAppInitializer`, como en el TP-1 (no está en los ejemplos de clase) |
+| 2 | Contador de 10 minutos que no se reinicie al recargar | El modal de "quedan 5 minutos" | **A (recomendada):** guardar la hora del login en la sesión del `localStorage` y calcular cuánto falta, con `setTimeout` (visto) y `clearTimeout` para cancelarlo (no visto, es su par) · **B:** leer el vencimiento de adentro del token (no visto) · **C:** arrancar 10 minutos en cada carga (falla si se recarga en el minuto 8) |
+| 3 | 401 → login | "Si una petición devuelve 401, redirigir al login" | **A (recomendada):** un tercer interceptor con `catchError` de RxJS (misma familia que `retry`), salvo en el propio login · **B:** repetirlo en el `error:` de cada pedido |
 
 ### Back
 - [ ] **`GET /publicaciones/:id/comentarios`**: paginado, los más recientes primero
@@ -371,7 +401,7 @@ me gusta se rechaza, y el orden "por me gusta" cambia. ✅ **Cumplida** (07/11, 
 - [ ] Página de **una publicación**: grande, con sus comentarios uno debajo del otro
 - [ ] Primera carga limitada y botón **"cargar más"** que suma sin borrar los anteriores
 - [ ] Escribir comentarios; editar el propio, que queda marcado como **"(editado)"**
-- [ ] Guardar el token en el navegador al hacer login o registro
+- [x] Guardar el token en el navegador al hacer login o registro (hecho en el Paso 7 del Sprint 2)
 - [ ] **Pantalla de carga** con spinner que valida el token contra `/auth/autorizar`
       y redirige a publicaciones o al login (como el `provideAppInitializer` del TP-1)
 - [ ] A los 10 minutos de iniciar sesión, **modal**: "quedan 5 minutos, ¿extender la sesión?"
