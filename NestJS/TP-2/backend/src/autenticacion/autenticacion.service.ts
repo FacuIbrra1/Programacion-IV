@@ -87,6 +87,8 @@ export class AutenticacionService {
     if ( !usuario || !(await bcrypt.compare(loginDto.password, usuario.password))) {
       throw new UnauthorizedException('Usuario o contraseña incorrectos');
     }
+
+    return await this.respuestaConToken(usuario);
   }
 
   // ---- RESPUESTA CON TOKEN ----:

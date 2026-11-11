@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {IsNotEmpty, IsString } from 'class-validator';
 
 // El login es con el correo o con el nombre de usuario (los dos son únicos en la base).
 // La contraseña llega sin encriptar.
