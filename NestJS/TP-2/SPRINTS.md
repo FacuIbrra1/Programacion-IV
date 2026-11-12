@@ -368,46 +368,56 @@ me gusta se rechaza, y el orden "por me gusta" cambia. ✅ **Cumplida** (07/11, 
 
 | Paso | Qué | Dónde |
 |---|---|---|
-| 1 | `GET /publicaciones/:id` y comentarios paginados (`offset` y `limit`) | Back · ⏳ probado en una copia (20/20 en Postman) |
-| 2 | `POST /publicaciones/:id/comentarios` y `PUT /comentarios/:id` (403 si no es el autor, `modificado: true`) | Back |
-| 3 | Página de una publicación: grande, con sus comentarios y "cargar más" | Front |
-| 4 | Escribir comentarios y editar los propios ("(editado)") | Front |
-| 5 | `POST /auth/autorizar` y `POST /auth/refrescar`, y anotar cada login en `ingresos` | Back |
-| 6 | Guards de sesión y 401 → login | Front |
-| 7 | Pantalla de cargando con spinner, que valida el token con `autorizar` | Front |
-| 8 | Contador de 10 minutos y modal para extender la sesión (`refrescar`) | Front |
+| 1 | `GET /publicaciones/:id` y comentarios paginados (`offset` y `limit`) | Back · ✅ pusheado |
+| 2 | `POST /publicaciones/:id/comentarios` y `PUT /comentarios/:id` (403 si no es el autor, `modificado: true`) + rechazo de textos con solo espacios | Back · ✅ pusheado (al controller le faltaban las rutas: van en el zip de los pasos 3 a 8) |
+| 3 | Página de una publicación (`/publicacion/:id`): grande, con sus comentarios y "Cargar más" (de a 5) | Front · ✅ probado |
+| 4 | Escribir comentarios y editar los propios ("(editado)") | Front · ✅ probado |
+| 5 | `POST /auth/autorizar` y `POST /auth/refrescar` (reemplazan a `GET /auth/perfil`), y cada login o registro anotado en `ingresos` | Back · ✅ probado (Postman 54/54) |
+| 6 | Guards de sesión (`sesionGuard` e `invitadoGuard`) y 401 → login con el aviso "Tu sesión venció" | Front · ✅ probado |
+| 7 | Pantalla de cargando con spinner en la ruta inicial, que valida el token con `autorizar` | Front · ✅ probado |
+| 8 | Contador de 10 minutos y modal para extender la sesión (`refrescar`) | Front · ✅ probado (con 30 s / 20 s) |
 
-### Conceptos no vistos que pide el Sprint 3 (⏳ por decidir)
+Los pasos 3 a 8 se entregaron juntos el 12/11 (día de la presentación), en un zip para copiar sobre el laboratorio.
+
+### Conceptos no vistos que pide el Sprint 3 (✅ decididos el 12/11: las tres A)
 
 | # | Concepto | Para qué | Opciones |
 |---|---|---|---|
-| 1 | Pantalla de cargando | "Al iniciar la aplicación… validar el token contra autorizar" | **A (recomendada):** componente `Cargando` en la ruta inicial que llama a `autorizar` y navega con `router.navigate` (visto) · **B:** `provideAppInitializer`, como en el TP-1 (no está en los ejemplos de clase) |
-| 2 | Contador de 10 minutos que no se reinicie al recargar | El modal de "quedan 5 minutos" | **A (recomendada):** guardar la hora del login en la sesión del `localStorage` y calcular cuánto falta, con `setTimeout` (visto) y `clearTimeout` para cancelarlo (no visto, es su par) · **B:** leer el vencimiento de adentro del token (no visto) · **C:** arrancar 10 minutos en cada carga (falla si se recarga en el minuto 8) |
-| 3 | 401 → login | "Si una petición devuelve 401, redirigir al login" | **A (recomendada):** un tercer interceptor con `catchError` de RxJS (misma familia que `retry`), salvo en el propio login · **B:** repetirlo en el `error:` de cada pedido |
+| 1 | Pantalla de cargando | "Al iniciar la aplicación… validar el token contra autorizar" | ✅ **A:** componente `Cargando` en la ruta inicial que llama a `autorizar` y navega con `router.navigate` (visto) · **B:** `provideAppInitializer`, como en el TP-1 (no está en los ejemplos de clase) |
+| 2 | Contador de 10 minutos que no se reinicie al recargar | El modal de "quedan 5 minutos" | ✅ **A:** guardar la hora del login en la sesión del `localStorage` y calcular cuánto falta, con `setTimeout` (visto) y `clearTimeout` para cancelarlo (no visto, es su par) · **B:** leer el vencimiento de adentro del token (no visto) · **C:** arrancar 10 minutos en cada carga (falla si se recarga en el minuto 8) |
+| 3 | 401 → login | "Si una petición devuelve 401, redirigir al login" | ✅ **A:** un tercer interceptor con `catchError` de RxJS (misma familia que `retry`), salvo en el propio login · **B:** repetirlo en el `error:` de cada pedido |
+
+**Otras piezas que usa el Sprint 3:** `@Put` (en clase se vio `@Patch`; el enunciado pide PUT), `@Matches(/\S/)`
+para rechazar textos de solo espacios (regex, como la de la contraseña), `throwError` junto con `catchError`,
+y `@keyframes` en el CSS del spinner. Para el formulario de comentar se vuelve a armar el `FormGroup` con
+`fb.group` (visto) en lugar de `reset()` o `setValue()` (no vistos).
+
+**Para la presentación con el token de 30 s:** `expiresIn: '30s'` en `app.module.ts` y `AVISO_MS = 20 * 1000`
+en `servicios/autenticacion.ts` (el aviso aparece a los 20 s). Después, volver a `'15m'` y `10 * 60 * 1000`.
 
 ### Back
-- [ ] **`GET /publicaciones/:id/comentarios`**: paginado, los más recientes primero
+- [x] **`GET /publicaciones/:id/comentarios`**: paginado, los más recientes primero
       (adelantado en el Paso 11 del Sprint 2: ya ordena y trae el autor; falta paginar con `offset` y `limit`)
-- [ ] **`GET /publicaciones/:id`** para la página de una publicación (ojo: declararlo **después** de `@Get('mis-likes')`,
+- [x] **`GET /publicaciones/:id`** para la página de una publicación (ojo: declararlo **después** de `@Get('mis-likes')`,
       si no Nest toma "mis-likes" como un id)
-- [ ] **`POST /publicaciones/:id/comentarios`**: con el usuario del token y la fecha
-- [ ] **`PUT /comentarios/:id`**: solo el autor; marca `modificado: true`
-- [ ] Token con id, username y perfil; **vence a los 15 minutos**
-- [ ] **`POST /auth/autorizar`**: token inválido o vencido → **401**; si es válido, devuelve el usuario
-- [ ] **`POST /auth/refrescar`**: nuevo token con el mismo payload y otros 15 minutos
-- [ ] Empezar a registrar cada login en `ingresos` (para el Sprint 5)
+- [x] **`POST /publicaciones/:id/comentarios`**: con el usuario del token y la fecha
+- [x] **`PUT /comentarios/:id`**: solo el autor; marca `modificado: true`
+- [x] Token con id, username y perfil; **vence a los 15 minutos**
+- [x] **`POST /auth/autorizar`**: token inválido o vencido → **401**; si es válido, devuelve el usuario
+- [x] **`POST /auth/refrescar`**: nuevo token con el mismo payload y otros 15 minutos
+- [x] Empezar a registrar cada login en `ingresos` (para el Sprint 5)
 
 ### Front
-- [ ] Página de **una publicación**: grande, con sus comentarios uno debajo del otro
-- [ ] Primera carga limitada y botón **"cargar más"** que suma sin borrar los anteriores
-- [ ] Escribir comentarios; editar el propio, que queda marcado como **"(editado)"**
+- [x] Página de **una publicación**: grande, con sus comentarios uno debajo del otro
+- [x] Primera carga limitada y botón **"cargar más"** que suma sin borrar los anteriores
+- [x] Escribir comentarios; editar el propio, que queda marcado como **"(editado)"**
 - [x] Guardar el token en el navegador al hacer login o registro (hecho en el Paso 7 del Sprint 2)
-- [ ] **Pantalla de carga** con spinner que valida el token contra `/auth/autorizar`
+- [x] **Pantalla de carga** con spinner que valida el token contra `/auth/autorizar`
       y redirige a publicaciones o al login (como el `provideAppInitializer` del TP-1)
-- [ ] A los 10 minutos de iniciar sesión, **modal**: "quedan 5 minutos, ¿extender la sesión?"
+- [x] A los 10 minutos de iniciar sesión, **modal**: "quedan 5 minutos, ¿extender la sesión?"
       → `/auth/refrescar`
-- [ ] Cualquier **401** redirige al login
-- [ ] Guards de sesión en todas las rutas
+- [x] Cualquier **401** redirige al login
+- [x] Guards de sesión en todas las rutas
 
 **Definición de hecho:** dejar la sesión abierta 10 minutos, ver el modal, extenderla y seguir
 usando la app sin volver a iniciar sesión.
