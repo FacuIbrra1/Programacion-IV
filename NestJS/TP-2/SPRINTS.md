@@ -83,7 +83,7 @@ profesor. Cada sprint termina el día de una clase, así se presenta apenas est�
 | 30/10 → 08/11 | vie → dom | **Sprint 2** — publicaciones y me gusta (el back quedó listo el 04/11; el front, del 06/11 al 08/11) |
 | 03/11 | martes | Sin clase |
 | **05/11** | jueves | **Clase — presentación del Sprint 1** |
-| 09/11 → 12/11 | lun → jue | **Sprint 3** — comentarios y sesión con JWT de 15 minutos |
+| 09/11 → 12/11 | lun → jue | **Sprint 3** — comentarios y sesión con JWT de 15 minutos ✅ terminado y en entrega |
 | **10/11** | martes | **Clase — presentación del Sprint 2** (al final hubo clase) ✅ presentado, con 3 correcciones |
 | **12/11** | jueves | **Clase — presentación del Sprint 3** |
 | 13/11 → 17/11 | vie → mar | **Sprint 4** — administrador, estadísticas, PWA, pipes y directivas |
@@ -378,6 +378,8 @@ me gusta se rechaza, y el orden "por me gusta" cambia. ✅ **Cumplida** (07/11, 
 | 8 | Contador de 10 minutos y modal para extender la sesión (`refrescar`) | Front · ✅ probado (con 30 s / 20 s) |
 
 Los pasos 3 a 8 se entregaron juntos el 12/11 (día de la presentación), en un zip para copiar sobre el laboratorio.
+
+✅ **Sprint 3 pasado a entrega el 12/11** (commit `e45ff4e`): el código de entrega es igual al del laboratorio. Compilan los dos proyectos; Postman da 54/54 (Sprint 3) y 52/52 (Sprint 2), y el recorrido en el navegador da lo esperado.
 
 ### Conceptos no vistos que pide el Sprint 3 (✅ decididos el 12/11: las tres A)
 
