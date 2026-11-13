@@ -469,12 +469,18 @@ Hay que instalar dos librerías en el front: `npm install chart.js@4.6.1 @angula
   - [x] `GET /estadisticas/comentarios-por-dia` → `{ total, dias: [{ dia, cantidad }] }` (todos los días del lapso, también en 0)
   - [x] `GET /estadisticas/comentarios-por-publicacion` → `[{ id, titulo, cantidad }]`
 - [x] Se sacó el `console.log` del AuthGuard
+- [x] **Tipo de cuenta `administrador`** (pedido el 13/11): un cuarto tipo, además de jugador, DT y club, solo para el
+      alta del dashboard con perfil administrador. `CreateUsuarioAdminDto` usa `OmitType(CreateUsuarioDto, ['tipo'])`
+      y vuelve a declarar `tipo` con las cuatro opciones; el registro sigue aceptando solo tres. Tipo `administrador`
+      con perfil `usuario` → 400
 
 ### Front
 - [x] Botón de baja de **cualquier** publicación para administradores: dice "Dar de baja" en las ajenas y "Borrar" en las
       propias; el modal avisa que también dejan de estar disponibles los comentarios
 - [x] **`dashboard/usuarios`**: listado (foto, datos, perfil y estado), alta con el formulario del registro en modo
-      administrador (radio buttons `usuario`/`administrador`), habilitar y deshabilitar con modal
+      administrador (radio buttons `usuario`/`administrador`), habilitar y deshabilitar con modal. Con el perfil
+      Administrador aparece la tarjeta del tipo **Administrador** (lleva apellido y fecha, como el jugador); el validador
+      cruzado `tipoSegunPerfil` avisa si después se cambia el perfil a Usuario
 - [x] **`dashboard/estadisticas`**: barras (publicaciones por usuario), torta (comentarios por publicación: las 5 más
       comentadas y el resto en "Otras") y líneas (comentarios por día, con el total), con selector de fechas
       (por defecto, los últimos 30 días)
@@ -494,7 +500,7 @@ Hay que instalar dos librerías en el front: `npm install chart.js@4.6.1 @angula
 | 2 | **`$gte` / `$lte`** en `find` | Filtrar por el lapso de fechas | **A:** `find({ fecha: { $gte, $lte } })` y contar recorriendo la lista (misma familia que `$inc`) · **B:** `aggregate` con `$match`/`$group`/`$lookup` (varios conceptos nuevos) · **C:** traer todo y filtrar en TypeScript (lento) | ⏳ A, a confirmar |
 | 3 | Zona horaria fija `-03:00` | Que un comentario de las 22:00 cuente para su día y que "hasta" incluya el día entero | Argentina no tiene horario de verano | ⏳ A confirmar |
 | 4 | Dos guards encadenados | AuthGuard (401) + AdminGuard (403) | Un solo guard que haga las dos cosas | ✅ Dos, cada uno con su trabajo |
-| 5 | `extends` en un DTO | El alta del administrador = registro + perfil | Repetir los 9 campos | ✅ `CreateUsuarioAdminDto extends CreateUsuarioDto` |
+| 5 | `extends` + **`OmitType`** en un DTO | El alta del administrador = registro + perfil, con un tipo más | Repetir los 9 campos · `declare tipo` (TypeScript) | ✅ `extends OmitType(CreateUsuarioDto, ['tipo'])`: de la misma familia que el `PartialType` del ejercicio-1 |
 | 6 | En las directivas: `(error)` de una imagen, `[textContent]` y una variable de plantilla (`#campoPassword`) | Foto de respaldo y botón "Mostrar" | `host` ya se usó en la directiva del TP-1; `#` se vio con `ng-template` | ✅ |
 | 7 | 403 en el login de una cuenta deshabilitada | Distinguirlo de "usuario o contraseña incorrectos" (401) | 401 con otro mensaje | ✅ 403: los datos son correctos, pero no tiene permiso |
 
@@ -503,7 +509,7 @@ Hay que instalar dos librerías en el front: `npm install chart.js@4.6.1 @angula
 publicación (con muchas porciones no se lee). Los colores de los gráficos están validados para daltonismo sobre el
 fondo oscuro de la app.
 
-**Pruebas (en una copia):** Postman Sprint 4 **45/45** (U: usuarios, E: estadísticas, B: baja), y de regresión Sprint 3
+**Pruebas (en una copia):** Postman Sprint 4 **50/50** (con la carpeta T del tipo Administrador) (U: usuarios, E: estadísticas, B: baja), y de regresión Sprint 3
 75/75 y Sprint 2 52/52 (el registro se movió de servicio). En el navegador, con el build de producción: alta con perfil
 administrador, 409 en el formulario, deshabilitar con modal → el login avisa, habilitar, `adminGuard`, los tres gráficos
 al cambiar el lapso (y vacíos), los pipes, las tres directivas, el service worker activo y el celular sin scroll lateral.
