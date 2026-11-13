@@ -86,7 +86,7 @@ profesor. Cada sprint termina el día de una clase, así se presenta apenas est�
 | 09/11 → 12/11 | lun → jue | **Sprint 3** — comentarios y sesión con JWT de 15 minutos ✅ terminado y en entrega |
 | **10/11** | martes | **Clase — presentación del Sprint 2** (al final hubo clase) ✅ presentado, con 3 correcciones |
 | **12/11** | jueves | **Clase — presentación del Sprint 3** |
-| 13/11 → 17/11 | vie → mar | **Sprint 4** — administrador, estadísticas, PWA, pipes y directivas |
+| 13/11 → 17/11 | vie → mar | **Sprint 4** — administrador, estadísticas, PWA, pipes y directivas ⏳ entregado en zip el 13/11 |
 | **17/11** | martes | **Clase — presentación del Sprint 4 · Finalización** |
 | 18/11 | miércoles | Colchón: pruebas en la URL pública, README y preparación de la defensa |
 | **19/11** | jueves | **Clase — Entrega y defensa oral** |
@@ -428,8 +428,8 @@ usando la app sin volver a iniciar sesión.
 
 | # | Corrección | Cómo se resuelve | Estado |
 |---|---|---|---|
-| 1 | El aviso tiene que salir según el **vencimiento real del token**: cuando quedan 5 minutos (30 s en la presentación). Ejemplo del profe: al irse a otra pestaña y volver, el aviso no coincidía con la sesión | El back devuelve `vence` (el `exp` del token, en ms) en login, registro y refrescar (`jwtService.decode`). El front, en lugar de un `setTimeout` de 10 minutos, revisa **una vez por segundo** (`setInterval`) cuánto falta con `Date.now()`: los navegadores frenan los temporizadores de las pestañas en segundo plano, pero el reloj real sigue. Al volver, la app ve la situación real: muestra el aviso con el tiempo que queda (`4:59`) o, si ya venció, cierra la sesión y va al login | ⏳ Probado en una copia (zip) |
-| 2 | Poder **editar el perfil y las publicaciones** | `PATCH /usuarios/mi-perfil` (nombre, apellido, descripción, fecha y foto; no el correo, el usuario, el tipo ni el perfil) y `PATCH /publicaciones/:id` (título, mensaje y categoría; solo el autor, si no 403) con `PartialType` como en el ejercicio-1. Front: "Editar perfil" en Mi Perfil y "Editar" en la tarjeta (listado y página) | ⏳ Probado en una copia (zip) |
+| 1 | El aviso tiene que salir según el **vencimiento real del token**: cuando quedan 5 minutos (30 s en la presentación). Ejemplo del profe: al irse a otra pestaña y volver, el aviso no coincidía con la sesión | El back devuelve `vence` (el `exp` del token, en ms) en login, registro y refrescar (`jwtService.decode`). El front, en lugar de un `setTimeout` de 10 minutos, revisa **una vez por segundo** (`setInterval`) cuánto falta con `Date.now()`: los navegadores frenan los temporizadores de las pestañas en segundo plano, pero el reloj real sigue. Al volver, la app ve la situación real: muestra el aviso con el tiempo que queda (`4:59`) o, si ya venció, cierra la sesión y va al login | ✅ En el laboratorio (13/11) · ⏳ falta pasarlo a entrega |
+| 2 | Poder **editar el perfil y las publicaciones** | `PATCH /usuarios/mi-perfil` (nombre, apellido, descripción, fecha y foto; no el correo, el usuario, el tipo ni el perfil) y `PATCH /publicaciones/:id` (título, mensaje y categoría; solo el autor, si no 403) con `PartialType` como en el ejercicio-1. Front: "Editar perfil" en Mi Perfil y "Editar" en la tarjeta (listado y página) | ✅ En el laboratorio (13/11) · ⏳ falta pasarlo a entrega |
 
 **Conceptos nuevos de las correcciones:** `jwtService.decode` (lee el contenido del token, del mismo servicio que
 `signAsync` y `verifyAsync`) y `setInterval`/`clearInterval` (los pares de `setTimeout`/`clearTimeout`).
@@ -446,44 +446,77 @@ el aviso con token de 1 minuto y la vuelta de otra pestaña simulada (temporizad
 
 **Objetivo:** el panel del administrador y cerrar los requisitos de la aplicación.
 
-**Orden sugerido:** como el Sprint 4 tiene solo 5 días, el back (usuarios, guard de roles y
-estadísticas) conviene empezarlo durante el Sprint 3, si sobra tiempo. Después, el front del
-dashboard, la PWA, los pipes y las directivas, que ya se hicieron en el TP-1.
+**Estado (13/11):** ⏳ entregado en un zip (`Sprint4.zip`) para copiar sobre el laboratorio, probado en una copia.
+Hay que instalar dos librerías en el front: `npm install chart.js@4.6.1 @angular/service-worker@22.2.3`
+(la versión del service worker tiene que ser la de Angular, 22.2.3).
 
 ### Back
-- [ ] **Guard de roles**: solo `administrador`
-- [ ] **Usuarios controller** (solo administrador):
-  - [ ] `GET` listado de usuarios
-  - [ ] `POST` alta de un usuario eligiendo si es `usuario` o `administrador`
-  - [ ] `DELETE` deshabilitar (baja lógica)
-  - [ ] `POST` rehabilitar (alta lógica)
-- [ ] Login de un usuario deshabilitado → rechazado con un mensaje claro
-- [ ] Baja de una publicación por un administrador: también dejan de verse sus comentarios
-- [ ] **Estadísticas controller** (solo administrador), con agregaciones y rango de fechas:
-  - [ ] Publicaciones por usuario
-  - [ ] Comentarios en el lapso
-  - [ ] Comentarios por publicación
+- [x] **Guard de roles** (`guards/admin/admin.guard.ts`): mira el `perfil` del token que dejó el AuthGuard; si no es
+      `administrador`, **403**. Se usa como `@UseGuards(AuthGuard, AdminGuard)` (los guards corren en ese orden)
+- [x] **Usuarios controller** (solo administrador):
+  - [x] `GET /usuarios`: todos, sin contraseñas, ordenados por nombre de usuario
+  - [x] `POST /usuarios`: los datos del registro + `perfil` (`usuario` | `administrador`), con la imagen → 201, sin token
+  - [x] `DELETE /usuarios/:id`: deshabilitar (baja lógica, `activo: false`); 400 si es la propia cuenta, 404 si no existe
+  - [x] `POST /usuarios/:id/habilitar`: rehabilitar (alta lógica) → 200
+- [x] La creación de cuentas pasó de `AutenticacionService.registro` a **`UsuariosService.crear(dto, imagen, perfil)`**:
+      la usan el registro (siempre `usuario`) y el administrador. Mismas validaciones (400, 409, 413)
+- [x] Login de un usuario deshabilitado → **403** "Tu cuenta está deshabilitada. Comunicate con un administrador."
+      (se revisa después de la contraseña: con una contraseña mal sigue dando 401 y no se revela nada)
+- [x] `autorizar` y `refrescar` también rechazan una cuenta deshabilitada (401): no puede seguir ni extender la sesión
+- [x] Baja de una publicación por un administrador: ya funcionaba desde el Sprint 2; sus comentarios dan 404
+- [x] **Estadísticas controller** (módulo publicaciones, solo administrador), con `?desde=AAAA-MM-DD&hasta=AAAA-MM-DD`:
+  - [x] `GET /estadisticas/publicaciones-por-usuario` → `[{ username, cantidad }]`
+  - [x] `GET /estadisticas/comentarios-por-dia` → `{ total, dias: [{ dia, cantidad }] }` (todos los días del lapso, también en 0)
+  - [x] `GET /estadisticas/comentarios-por-publicacion` → `[{ id, titulo, cantidad }]`
+- [x] Se sacó el `console.log` del AuthGuard
 
 ### Front
-- [ ] Botón de baja de **cualquier** publicación visible solo para administradores
-- [ ] **`dashboard/usuarios`**: listado, alta con radio buttons `usuario`/`administrador`,
-      habilitar y deshabilitar
-- [ ] **`dashboard/estadisticas`**: tres gráficos de **tipos distintos** (torta, barras, líneas)
-      con selector de rango de fechas
-- [ ] **PWA**
-- [ ] **3 pipes propios**, por ejemplo: edad a partir de la fecha de nacimiento, "hace 2 horas",
-      posición abreviada (Delantero → DEL)
-- [ ] **3 directivas propias**, por ejemplo: resaltar publicaciones "Busco club", imagen de
-      respaldo para fotos rotas, y una más a definir
+- [x] Botón de baja de **cualquier** publicación para administradores: dice "Dar de baja" en las ajenas y "Borrar" en las
+      propias; el modal avisa que también dejan de estar disponibles los comentarios
+- [x] **`dashboard/usuarios`**: listado (foto, datos, perfil y estado), alta con el formulario del registro en modo
+      administrador (radio buttons `usuario`/`administrador`), habilitar y deshabilitar con modal
+- [x] **`dashboard/estadisticas`**: barras (publicaciones por usuario), torta (comentarios por publicación: las 5 más
+      comentadas y el resto en "Otras") y líneas (comentarios por día, con el total), con selector de fechas
+      (por defecto, los últimos 30 días)
+- [x] `adminGuard` + rutas hijas (`dashboard` con `<router-outlet>`, como "productos" del ejemplo de clase) y "Dashboard"
+      en el menú solo para administradores
+- [x] **PWA** como en el TP-1: `provideServiceWorker`, `ngsw-config.json`, `manifest.webmanifest` e íconos del logo
+- [x] **3 pipes propios:** `tipoCuenta` ('dt' → 'Director técnico'), `haceTiempo` ('hace 2 horas', con la fecha exacta
+      en el `title`) y `edad` ('25 años'; para un club, los años de la institución)
+- [x] **3 directivas propias:** `appImagenRespaldo` (foto rota → silueta), `appColorCategoria` (cada categoría con su
+      color) y `appMostrarClave` (botón "Mostrar" en las contraseñas del login y del registro)
+
+### Conceptos no vistos que usa el Sprint 4 (a revisar)
+
+| # | Concepto | Para qué | Opciones | Elegida |
+|---|---|---|---|---|
+| 1 | **Chart.js** | Los tres gráficos | Pedido explícito (13/11): "chart.js de forma sencilla" | ✅ `new Chart('id-del-canvas', { type, data, options })`, sin librerías extra (ng2-charts) |
+| 2 | **`$gte` / `$lte`** en `find` | Filtrar por el lapso de fechas | **A:** `find({ fecha: { $gte, $lte } })` y contar recorriendo la lista (misma familia que `$inc`) · **B:** `aggregate` con `$match`/`$group`/`$lookup` (varios conceptos nuevos) · **C:** traer todo y filtrar en TypeScript (lento) | ⏳ A, a confirmar |
+| 3 | Zona horaria fija `-03:00` | Que un comentario de las 22:00 cuente para su día y que "hasta" incluya el día entero | Argentina no tiene horario de verano | ⏳ A confirmar |
+| 4 | Dos guards encadenados | AuthGuard (401) + AdminGuard (403) | Un solo guard que haga las dos cosas | ✅ Dos, cada uno con su trabajo |
+| 5 | `extends` en un DTO | El alta del administrador = registro + perfil | Repetir los 9 campos | ✅ `CreateUsuarioAdminDto extends CreateUsuarioDto` |
+| 6 | En las directivas: `(error)` de una imagen, `[textContent]` y una variable de plantilla (`#campoPassword`) | Foto de respaldo y botón "Mostrar" | `host` ya se usó en la directiva del TP-1; `#` se vio con `ng-template` | ✅ |
+| 7 | 403 en el login de una cuenta deshabilitada | Distinguirlo de "usuario o contraseña incorrectos" (401) | 401 con otro mensaje | ✅ 403: los datos son correctos, pero no tiene permiso |
+
+**Otras decisiones:** las estadísticas cuentan todo lo **realizado** en el lapso, también lo que después se dio de baja
+(si se prefiere contar solo lo activo, es agregar `activa: true` al filtro). La torta junta en "Otras" a partir de la sexta
+publicación (con muchas porciones no se lee). Los colores de los gráficos están validados para daltonismo sobre el
+fondo oscuro de la app.
+
+**Pruebas (en una copia):** Postman Sprint 4 **45/45** (U: usuarios, E: estadísticas, B: baja), y de regresión Sprint 3
+75/75 y Sprint 2 52/52 (el registro se movió de servicio). En el navegador, con el build de producción: alta con perfil
+administrador, 409 en el formulario, deshabilitar con modal → el login avisa, habilitar, `adminGuard`, los tres gráficos
+al cambiar el lapso (y vacíos), los pipes, las tres directivas, el service worker activo y el celular sin scroll lateral.
 
 **Definición de hecho:** un administrador deshabilita una cuenta, esa cuenta no puede entrar y
-ve el motivo; los tres gráficos cambian al mover el rango de fechas.
+ve el motivo; los tres gráficos cambian al mover el rango de fechas. ✅ Cumplida en la copia.
 
 ---
 
 ## Colchón — 18/11 · entrega y defensa el jue 19/11
 
 - [ ] Terminar lo que haya quedado pendiente del Sprint 4
+- [ ] Repo de entrega: agregar `backend/.env.example` (sin valores)
 - [ ] Llevar las dudas que queden a la clase del **mar 17/11** (la misma de la presentación del Sprint 4)
 - [ ] Recorrer el flujo completo en la URL pública, con los tres tipos de cuenta
 - [ ] Revisar que **ningún error responda 200 y ninguna respuesta correcta responda 400**
