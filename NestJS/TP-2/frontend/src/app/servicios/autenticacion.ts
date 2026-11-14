@@ -110,6 +110,11 @@ export class Autenticacion {
     this.mostrarAviso.set(false);
   }
 
+  // Sprint 4: el dashboard, el adminGuard y el menú solo son para administradores.
+  esAdministrador(): boolean {
+    return this.usuario()?.perfil === 'administrador';
+  }
+
   cerrarSesion() {
     localStorage.removeItem(CLAVE_SESION);
     this.usuario.set(null);
